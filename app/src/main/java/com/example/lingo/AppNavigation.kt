@@ -9,13 +9,13 @@ import androidx.navigation.compose.rememberNavController
 
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Routes.homeScreen, builder =  {
-        composable(Routes.homeScreen) {
-            HomeScreenPage(navController)
+    NavHost(navController = navController, startDestination = Routes.languageSelectScreen, builder =  {
+        composable(Routes.languageSelectScreen) {
+            LanguageSelectScreen(navController)
         }
-        composable(Routes.screenB+"/{name}") {
+        composable(Routes.homeScreen+"/{name}") {
             var name = it.arguments?.getString("name")
-            ScreenB(navController, name?:"No name")
+            HomeScreen(navController, name?:"No name")
         }
     })
 }
