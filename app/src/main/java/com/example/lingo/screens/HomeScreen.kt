@@ -1,34 +1,60 @@
-package com.example.lingo
+package com.example.lingo.screens
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 
 import androidx.compose.material3.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.lingo.R
+import com.example.lingo.Routes
 
 
 @Composable
-fun HomeScreen(navController : NavController, name: String) {
+fun HomeScreen(navController : NavController, languageName: String) {
+
+    val imageResource = when (languageName.lowercase()) {
+        "{spanish}" -> R.drawable.mexico_banner
+        "{french}" -> R.drawable.france_banner
+        "{german}" -> R.drawable.germany_banner
+        "{italian}" -> R.drawable.italy_banner
+        else -> R.drawable.germany_banner // Image to show if the name doesn't match
+    }
+
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
+
+        Image(
+            painter = painterResource(id = imageResource),
+            contentDescription = "German Banner",
+            modifier = Modifier.fillMaxWidth(),
+            contentScale = ContentScale.FillWidth
+        )
+
         // Practice column
         Column(
             //Modifier.fillMaxSize(),
@@ -57,7 +83,7 @@ fun HomeScreen(navController : NavController, name: String) {
                 Button(
                     modifier = Modifier.padding(16.dp),
                     onClick = {
-                        navController.navigate(Routes.languageSelectScreen)
+                        navController.navigate(Routes.flashcardSelectScreen + "/$languageName")
                     }
                 ) {
                     Text(
@@ -124,7 +150,7 @@ fun HomeScreen(navController : NavController, name: String) {
                 Button(
                     modifier = Modifier.padding(16.dp),
                     onClick = {
-                        navController.navigate(Routes.languageSelectScreen)
+                        navController.navigate(Routes.quizSelectScreen  + "/$languageName")
                     }
                 ) {
                     Text(
@@ -135,6 +161,26 @@ fun HomeScreen(navController : NavController, name: String) {
                 }
 
             }
+        }
+
+        // Change language button
+        OutlinedButton(
+            modifier = Modifier.padding(16.dp),
+            border = BorderStroke(width = 3.dp, color = Color.Black),
+            onClick = {
+                navController.navigate(Routes.languageSelectScreen)
+            }
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.back_arrow),
+                contentDescription = "Italian Flag",
+                modifier = Modifier.size(50.dp)
+            )
+            Text(
+                text = "Change Language",
+                style = TextStyle(fontSize = 28.sp, color = Color.Black, fontWeight = FontWeight.Bold),
+                modifier = Modifier.padding(16.dp)
+            )
         }
 
     }

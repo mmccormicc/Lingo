@@ -1,4 +1,4 @@
-package com.example.lingo
+package com.example.lingo.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 
 import androidx.compose.material3.Text
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.ui.Alignment
@@ -22,6 +21,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.lingo.R
+import com.example.lingo.Routes
 
 
 @Composable
@@ -46,7 +47,7 @@ fun LanguageSelectScreen(navController: NavController) {
         // Spanish button
         OutlinedButton(
             onClick = {
-                navController.navigate(Routes.homeScreen + "/spanish")
+                navController.navigate(Routes.homeScreen + "/{spanish}")
             },
             border = BorderStroke(width = 3.dp, color = MaterialTheme.colorScheme.primary)
         ) {
@@ -65,7 +66,7 @@ fun LanguageSelectScreen(navController: NavController) {
         // French button
         OutlinedButton(
             onClick = {
-                navController.navigate(Routes.homeScreen + "/french")
+                navController.navigate(Routes.homeScreen + "/{french}")
             },
             border = BorderStroke(width = 3.dp, color = MaterialTheme.colorScheme.primary)
         ) {
@@ -84,7 +85,7 @@ fun LanguageSelectScreen(navController: NavController) {
         // German button
         OutlinedButton(
             onClick = {
-                navController.navigate(Routes.homeScreen + "/german")
+                navController.navigate(Routes.homeScreen + "/{german}")
             },
             border = BorderStroke(width = 3.dp, color = MaterialTheme.colorScheme.primary)
         ){
@@ -103,7 +104,7 @@ fun LanguageSelectScreen(navController: NavController) {
         // Italian button
         OutlinedButton(
             onClick = {
-                navController.navigate(Routes.homeScreen + "/italian")
+                navController.navigate(Routes.homeScreen + "/{italian}")
             },
             border = BorderStroke(width = 3.dp, color = MaterialTheme.colorScheme.primary)
         ) {
