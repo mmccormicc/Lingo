@@ -1,10 +1,12 @@
 package com.example.lingo.screens
 
 import android.R
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -34,6 +36,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -46,8 +50,18 @@ import java.nio.file.WatchEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuizSelectScreen(navController: NavHostController, name: String) {
-    val options = listOf("Option A", "Option B", "Option C", "Option D")
+fun QuizSelectScreen(navController: NavHostController, languageName: String) {
+
+    // Getting banner image depending on passed language name
+    val imageResource = when (languageName.lowercase()) {
+        "{spanish}" -> com.example.lingo.R.drawable.mexico_banner
+        "{french}" -> com.example.lingo.R.drawable.france_banner
+        "{german}" -> com.example.lingo.R.drawable.germany_banner
+        "{italian}" -> com.example.lingo.R.drawable.italy_banner
+        else -> com.example.lingo.R.drawable.germany_banner // Image to show if the name doesn't match
+    }
+
+    val options = listOf("Quiz 1", "Quiz 2")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
@@ -55,6 +69,15 @@ fun QuizSelectScreen(navController: NavHostController, name: String) {
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+
+        // Painting banner
+        Image(
+            painter = painterResource(id = imageResource),
+            contentDescription = languageName + "Banner",
+            modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+            contentScale = ContentScale.FillWidth
+        )
+
         // Choose flashcard category text
         Text(
             text = "Choose\nQuiz",
@@ -64,7 +87,7 @@ fun QuizSelectScreen(navController: NavHostController, name: String) {
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             ),
-            modifier = Modifier.padding(100.dp)
+            modifier = Modifier.padding(64.dp)
         )
 
         // Dropdown menu
@@ -86,13 +109,20 @@ fun QuizSelectScreen(navController: NavHostController, name: String) {
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                options.forEach { selectionOption ->
+                options.forEachIndexed { index, selectionOption ->
                     DropdownMenuItem(
                         text = {Text(text = selectionOption, style = TextStyle(
                             fontSize = 24.sp))},
                         onClick = {
                             selectedOptionText = selectionOption
                             expanded = false
+                            // Need to capture value of index within onClick method
+                            val correctIndex = index
+                            println(correctIndex)
+                            println(correctIndex)
+                            println(correctIndex)
+                            println(correctIndex)
+                            navController.navigate(Routes.quizScreen + "/$languageName/$correctIndex")
                         }
                     )
                 }
@@ -109,7 +139,7 @@ fun QuizSelectScreen(navController: NavHostController, name: String) {
             FilledIconButton(
                 colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.secondary),
                 onClick = {
-                    navController.navigate(Routes.homeScreen + "/$name")
+                    navController.navigate(Routes.homeScreen + "/$languageName")
                 },
                 modifier = Modifier.size(150.dp).padding(bottom = 100.dp)
             ) {

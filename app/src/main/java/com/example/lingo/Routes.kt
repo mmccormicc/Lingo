@@ -5,4 +5,5 @@ object Routes {
     var homeScreen = "home_screen"
     var flashcardSelectScreen = "flashcard_select_screen"
     var quizSelectScreen = "quiz_select_screen"
+    var quizScreen = "quiz_screen"
 }

@@ -34,6 +34,7 @@ import com.example.lingo.Routes
 @Composable
 fun HomeScreen(navController : NavController, languageName: String) {
 
+    // Getting banner image depending on passed language name
     val imageResource = when (languageName.lowercase()) {
         "{spanish}" -> R.drawable.mexico_banner
         "{french}" -> R.drawable.france_banner
@@ -48,9 +49,10 @@ fun HomeScreen(navController : NavController, languageName: String) {
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
 
+        // Painting banner
         Image(
             painter = painterResource(id = imageResource),
-            contentDescription = "German Banner",
+            contentDescription = languageName + "Banner",
             modifier = Modifier.fillMaxWidth(),
             contentScale = ContentScale.FillWidth
         )

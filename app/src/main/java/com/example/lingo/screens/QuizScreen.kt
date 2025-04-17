@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilledIconButton
@@ -21,9 +21,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,12 +34,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.lingo.Routes
+import com.example.lingo.data.Quiz
+import com.example.lingo.datahelper.QuizHelper
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FlashCardSelectScreen(navController: NavHostController, languageName: String) {
+fun QuizScreen(navController : NavController, languageName: String, quizNumber: Int) {
+
     // Getting banner image depending on passed language name
     val imageResource = when (languageName.lowercase()) {
         "{spanish}" -> com.example.lingo.R.drawable.mexico_banner
@@ -49,9 +51,19 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
         else -> com.example.lingo.R.drawable.germany_banner // Image to show if the name doesn't match
     }
 
-    val options = listOf("Option A", "Option B", "Option C", "Option D")
-    var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(options[0]) }
+    // Getting list of quizzes depending on language name
+    val quizzes = when (languageName.lowercase()) {
+        "{spanish}" -> QuizHelper.spanishQuizzes
+        "{french}" -> QuizHelper.spanishQuizzes
+        "{german}" -> QuizHelper.spanishQuizzes
+        "{italian}" -> QuizHelper.spanishQuizzes
+        else -> com.example.lingo.R.drawable.germany_banner // Image to show if the name doesn't match
+    } as List<Quiz>
+
+    val Quiz = quizzes[quizNumber]
+
+    val quizQuestion by remember { mutableStateOf(Quiz.questions[0].question)}
+    val answerOptions by remember { mutableStateOf(Quiz.questions[0].options)}
 
     Column(
         Modifier.fillMaxSize(),
@@ -66,70 +78,30 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
             contentScale = ContentScale.FillWidth
         )
 
-
-
-        // Choose flashcard category text
+        // Current quiz question
         Text(
-            text = "Choose\nFlashcard\nCategory",
+            text = quizQuestion,
             style = TextStyle(
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center,
-                fontSize = 32.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             ),
             modifier = Modifier.padding(64.dp)
         )
 
-        // Dropdown menu
-        ExposedDropdownMenuBox(
-            expanded = expanded,
-            onExpandedChange = { expanded = !expanded },
-            modifier = Modifier.width(300.dp)
-        ) {
-            TextField(
-                readOnly = true,
-                value = selectedOptionText,
-                onValueChange = { },
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                colors = ExposedDropdownMenuDefaults.textFieldColors(),
-                modifier = Modifier.menuAnchor(),
-                textStyle = TextStyle(fontSize = 24.sp)
-            )
-            ExposedDropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false }
-            ) {
-                options.forEach { selectionOption ->
-                    DropdownMenuItem(
-                        text = {Text(text = selectionOption, style = TextStyle(
-                            fontSize = 24.sp))},
-                        onClick = {
-                            selectedOptionText = selectionOption
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        }
-
-        // Home button column
-        Column(
-            Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            // Home button
-            FilledIconButton(
-                colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.secondary),
+        // Quiz answer options
+        for (option in answerOptions ) {
+            Button(
+                modifier = Modifier.padding(4.dp),
                 onClick = {
-                    navController.navigate(Routes.homeScreen + "/$languageName")
-                },
-                modifier = Modifier.size(150.dp).padding(bottom = 100.dp)
+                    navController.navigate(Routes.flashcardSelectScreen + "/$languageName")
+                }
             ) {
-                Icon(
-                    imageVector = Icons.Filled.Home,
-                    contentDescription = "Home",
-                    modifier = Modifier.size(150.dp),
+                Text(
+                    text = option,
+                    style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
+                    modifier = Modifier.padding(16.dp)
                 )
             }
         }
