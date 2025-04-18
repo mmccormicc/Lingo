@@ -1,9 +1,7 @@
-package com.example.lingo.screens
+package com.example.lingo.ui.screens
 
-import android.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,20 +10,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -35,7 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -44,24 +35,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.lingo.R
 import com.example.lingo.Routes
-import kotlinx.coroutines.selects.select
-import java.nio.file.WatchEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuizSelectScreen(navController: NavHostController, languageName: String) {
-
+fun FlashCardSelectScreen(navController: NavHostController, languageName: String) {
     // Getting banner image depending on passed language name
     val imageResource = when (languageName.lowercase()) {
-        "{spanish}" -> com.example.lingo.R.drawable.mexico_banner
-        "{french}" -> com.example.lingo.R.drawable.france_banner
-        "{german}" -> com.example.lingo.R.drawable.germany_banner
-        "{italian}" -> com.example.lingo.R.drawable.italy_banner
-        else -> com.example.lingo.R.drawable.germany_banner // Image to show if the name doesn't match
+        "{spanish}" -> R.drawable.mexico_banner
+        "{french}" -> R.drawable.france_banner
+        "{german}" -> R.drawable.germany_banner
+        "{italian}" -> R.drawable.italy_banner
+        else -> R.drawable.germany_banner // Image to show if the name doesn't match
     }
 
-    val options = listOf("Quiz 1", "Quiz 2")
+    val options = listOf("Option A", "Option B", "Option C", "Option D")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
@@ -78,9 +67,11 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
             contentScale = ContentScale.FillWidth
         )
 
+
+
         // Choose flashcard category text
         Text(
-            text = "Choose\nQuiz",
+            text = "Choose\nFlashcard\nCategory",
             style = TextStyle(
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center,
@@ -109,20 +100,13 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                options.forEachIndexed { index, selectionOption ->
+                options.forEach { selectionOption ->
                     DropdownMenuItem(
                         text = {Text(text = selectionOption, style = TextStyle(
                             fontSize = 24.sp))},
                         onClick = {
                             selectedOptionText = selectionOption
                             expanded = false
-                            // Need to capture value of index within onClick method
-                            val correctIndex = index
-                            println(correctIndex)
-                            println(correctIndex)
-                            println(correctIndex)
-                            println(correctIndex)
-                            navController.navigate(Routes.quizScreen + "/$languageName/$correctIndex")
                         }
                     )
                 }

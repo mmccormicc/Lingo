@@ -1,10 +1,9 @@
-package com.example.lingo.screens
+package com.example.lingo.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,6 +32,10 @@ fun LanguageSelectScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
+
+        // Trying to debug theme not applying
+        //Text(text = "Primary: ${MaterialTheme.colorScheme.primary}", color = MaterialTheme.colorScheme.primary)
+
         // Heading language selection text
         Text(
             text = "Choose a\nLanguage to\nLearn",

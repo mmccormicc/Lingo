@@ -1,4 +1,4 @@
-package com.example.lingo.screens
+package com.example.lingo.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -39,7 +39,8 @@ import com.example.lingo.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FlashCardSelectScreen(navController: NavHostController, languageName: String) {
+fun QuizSelectScreen(navController: NavHostController, languageName: String) {
+
     // Getting banner image depending on passed language name
     val imageResource = when (languageName.lowercase()) {
         "{spanish}" -> com.example.lingo.R.drawable.mexico_banner
@@ -49,7 +50,7 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
         else -> com.example.lingo.R.drawable.germany_banner // Image to show if the name doesn't match
     }
 
-    val options = listOf("Option A", "Option B", "Option C", "Option D")
+    val options = listOf("Quiz 1", "Quiz 2")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
@@ -66,11 +67,9 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
             contentScale = ContentScale.FillWidth
         )
 
-
-
         // Choose flashcard category text
         Text(
-            text = "Choose\nFlashcard\nCategory",
+            text = "Choose\nQuiz",
             style = TextStyle(
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center,
@@ -99,13 +98,17 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                options.forEach { selectionOption ->
+                options.forEachIndexed { index, selectionOption ->
                     DropdownMenuItem(
                         text = {Text(text = selectionOption, style = TextStyle(
                             fontSize = 24.sp))},
                         onClick = {
                             selectedOptionText = selectionOption
                             expanded = false
+                            // Need to capture value of index within onClick method
+                            val correctIndex = index
+
+                            navController.navigate(Routes.quizScreen + "/$languageName/$correctIndex/$selectionOption")
                         }
                     )
                 }
