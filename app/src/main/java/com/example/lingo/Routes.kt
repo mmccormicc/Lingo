@@ -7,4 +7,5 @@ object Routes {
     var quizSelectScreen = "quiz_select_screen"
     var quizScreen = "quiz_screen"
     var quizResultScreen = "quiz_result_screen"
+    var pictureMatchScreen = "picture_match_screen"
 }

@@ -10,6 +10,7 @@ import com.example.lingo.Routes
 import com.example.lingo.ui.screens.FlashCardSelectScreen
 import com.example.lingo.ui.screens.HomeScreen
 import com.example.lingo.ui.screens.LanguageSelectScreen
+import com.example.lingo.ui.screens.PictureMatchScreen
 import com.example.lingo.ui.screens.QuizResultScreen
 import com.example.lingo.ui.screens.QuizScreen
 import com.example.lingo.ui.screens.QuizSelectScreen
@@ -35,29 +36,39 @@ fun AppNavigation() {
         }
         composable(
             Routes.quizScreen+"/{languagename}/{quiznumber}/{quizname}",
+            // Need to define types of arguments as some are ints
                 arguments = listOf(
-                navArgument("quiznumber") { type = NavType.IntType }, // Define quiznumber as IntType
+                navArgument("quiznumber") { type = NavType.IntType },
                 navArgument("languagename") { type = NavType.StringType },
                 navArgument("quizname") { type = NavType.StringType }
         )) {
+            // Parsing string for agruments
             var languageName = it.arguments?.getString("languagename")
             var quizNumber = it.arguments?.getInt("quiznumber")
             var quizName = it.arguments?.getString("quizname")
+                // Calling quiz screen composable with arguments
             QuizScreen(navController, languageName ?: "No language", quizNumber ?: -1, quizName ?: "No Quiz")
         }
         composable(
             Routes.quizResultScreen+"/{languagename}/{quizname}/{numquestions}/{correctquestions}",
+            // Need to define types of arguments as some are ints
             arguments = listOf(
                 navArgument("languagename") { type = NavType.StringType },
                 navArgument("quizname") { type = NavType.StringType },
                 navArgument("numquestions") { type = NavType.IntType },
                 navArgument("correctquestions") { type = NavType.IntType }
             )) {
+            // Parsing string for agruments
             var languageName = it.arguments?.getString("languagename")
             var quizName = it.arguments?.getString("quizname")
             var numQuestions = it.arguments?.getInt("numquestions")
             var correctQuestions = it.arguments?.getInt("correctquestions")
+            // Calling quiz result screen composable with arguments
             QuizResultScreen(navController, languageName ?: "No language", quizName ?: "No name", numQuestions ?: -1, correctQuestions ?: -1)
+        }
+        composable(Routes.pictureMatchScreen+"/{languagename}") {
+            var languageName = it.arguments?.getString("languagename")
+            PictureMatchScreen(navController, languageName ?: "No language")
         }
     })
 }

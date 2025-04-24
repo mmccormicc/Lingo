@@ -112,7 +112,7 @@ fun HomeScreen(navController : NavController, languageName: String) {
                 Button(
                     modifier = Modifier.padding(16.dp),
                     onClick = {
-                        navController.navigate(Routes.languageSelectScreen)
+                        navController.navigate(Routes.pictureMatchScreen + "/$languageName")
                     }
                 ) {
                     Text(
