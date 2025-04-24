@@ -50,8 +50,11 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
         else -> com.example.lingo.R.drawable.germany_banner // Image to show if the name doesn't match
     }
 
+    // List of dropdown options
     val options = listOf("Quiz 1", "Quiz 2")
+    // If dropdown menu is expanded or not
     var expanded by remember { mutableStateOf(false) }
+    // Option selected in dropdown menu
     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
     Column(
@@ -103,12 +106,16 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
                         text = {Text(text = selectionOption, style = TextStyle(
                             fontSize = 24.sp))},
                         onClick = {
+                            // Updating text on drop down menu
                             selectedOptionText = selectionOption
+                            // Minimizing menu
                             expanded = false
-                            // Need to capture value of index within onClick method
-                            val correctIndex = index
 
-                            navController.navigate(Routes.quizScreen + "/$languageName/$correctIndex/$selectionOption")
+                            // Need to capture value of quiz index within onClick method
+                            val correctQuizIndex = index
+
+                            // Navigating to quiz from selected option
+                            navController.navigate(Routes.quizScreen + "/$languageName/$correctQuizIndex/$selectionOption")
                         }
                     )
                 }

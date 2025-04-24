@@ -49,6 +49,7 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
         else -> R.drawable.germany_banner // Image to show if the name doesn't match
     }
 
+    // Setting quiz based on language and quiz number selected
     quizViewModel.setQuiz(quizNumber, languageName)
 
     Column(
