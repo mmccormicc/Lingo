@@ -61,7 +61,7 @@ fun ColorChangeButton(pictureMatchViewModel: PictureMatchViewModel, isCorrect : 
                         buttonColor = incorrectColor
                     }
                     // Waiting for animation
-                    delay(500)
+                    delay(600)
                     // Going to next question
                     pictureMatchViewModel.nextQuestion()
                 }

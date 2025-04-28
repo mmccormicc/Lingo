@@ -1,16 +1,12 @@
 package com.example.lingo.domain
 
-import android.graphics.Picture
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.lingo.R
 import com.example.lingo.data.PictureMatchQuestion
-import com.example.lingo.data.Quiz
-import com.example.lingo.data.QuizQuestion
 import kotlin.random.Random
 
 
