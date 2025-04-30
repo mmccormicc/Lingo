@@ -31,6 +31,63 @@ class QuizViewModel(): ViewModel() {
 
     var spanishQuizzes: List<Quiz> = listOf(spanishQuiz1, spanishQuiz2)
 
+    // French quizzes
+    var frenchQuiz1: Quiz =
+        Quiz(listOf(
+            QuizQuestion("What is house in French?", 1, listOf("Ecole", "Maison", "Chambre", "Manoir")),
+            QuizQuestion("What is man in French?", 0, listOf("Homme", "Chat", "Femme", "Garcon")),
+            QuizQuestion("What is woman in French?", 2, listOf("Chienne", "Fille", "Femme", "Homme")),
+            QuizQuestion("What is dog (masculine) in French?", 0, listOf("Chien", "Chat", "Chienne", "Chatte")),
+        ))
+    var frenchQuiz2: Quiz =
+        Quiz(listOf(
+            QuizQuestion("Which verb means 'to run' in French?", 0, listOf("Courir", "Dormir", "Travailler", "Manger")),
+            QuizQuestion("Which verb means 'to sleep' in French", 0, listOf("Dormir", "Manger", "Travailler", "Courir")),
+            QuizQuestion("Which verb means 'to eat' in French?", 3, listOf("Courir", "Travailler", "Dormir", "Manger")),
+            QuizQuestion("Which verb means 'to work' in French?", 1, listOf("Courir", "Travailler", "Manger", "Dormir")),
+        ))
+
+    var frenchQuizzes: List<Quiz> = listOf(frenchQuiz1, frenchQuiz2)
+
+
+    // German quizzes
+    var germanQuiz1: Quiz =
+        Quiz(listOf(
+            QuizQuestion("What is house in German?", 0, listOf("Haus", "Zimmer", "Schule", "Villa")),
+            QuizQuestion("What is man in German?", 3, listOf("Papa", "Frau", "Junge", "Mann")),
+            QuizQuestion("What is woman in German?", 2, listOf("Mama", "Madchen", "Frau", "Frosch")),
+            QuizQuestion("What is dog in German?", 1, listOf("Wolf", "Hund", "Katze", "Pferd")),
+        ))
+    var germanQuiz2: Quiz =
+        Quiz(listOf(
+            QuizQuestion("Which verb means 'to run' in German?", 2, listOf("Schlafen", "Arbeiten", "Laufen", "Essen")),
+            QuizQuestion("Which verb means 'to sleep' in German", 0, listOf("Schlafen", "Laufen", "Essen", "Arbeiten")),
+            QuizQuestion("Which verb means 'to eat' in German?", 3, listOf("Arbeiten", "Laufen", "Schlafen", "Essen")),
+            QuizQuestion("Which verb means 'to work' in German?", 1, listOf("Essen", "Arbeiten", "Schlafen", "Laufen")),
+        ))
+
+    var germanQuizzes: List<Quiz> = listOf(germanQuiz1, germanQuiz2)
+
+
+
+    // Italian quizzes
+    var italianQuiz1: Quiz =
+        Quiz(listOf(
+            QuizQuestion("What is house in Italian?", 1, listOf("Palazzo", "Casa", "Scuola", "Camera")),
+            QuizQuestion("What is man in Italian?", 0, listOf("Uomo", "Donna", "Ragazzo", "Nonno")),
+            QuizQuestion("What is woman in Italian?", 3, listOf("Uomo", "Ragazza", "Nonna", "Donna")),
+            QuizQuestion("What is dog (feminine) in Italian?", 3, listOf("Cavalla", "Lupa", "Gatta", "Cagna")),
+        ))
+    var italianQuiz2: Quiz =
+        Quiz(listOf(
+            QuizQuestion("Which verb means 'to run' in Italian?", 3, listOf("Lavorare", "Mangiare", "Dormire", "Correre")),
+            QuizQuestion("Which verb means 'to sleep' in Italian", 0, listOf("Dormire", "Lavorare", "Essen", "Mangiare")),
+            QuizQuestion("Which verb means 'to eat' in Italian?", 2, listOf("Lavorare", "Correre", "Mangiare", "Dormire")),
+            QuizQuestion("Which verb means 'to work' in Italian?", 3, listOf("Dormire", "Mangiare", "Correre", "Lavorare")),
+        ))
+
+    var italianQuizzes: List<Quiz> = listOf(italianQuiz1, italianQuiz2)
+
     // Holds current question number
     var questionNumber: Int by mutableIntStateOf(0)
     // Holds number of answers gotten as correct
@@ -64,9 +121,9 @@ class QuizViewModel(): ViewModel() {
         // Getting list of quizzes depending on selected language
         val quizzes = when (languageName.lowercase()) {
             "{spanish}" -> spanishQuizzes
-            "{french}" -> spanishQuizzes
-            "{german}" -> spanishQuizzes
-            "{italian}" -> spanishQuizzes
+            "{french}" -> frenchQuizzes
+            "{german}" -> germanQuizzes
+            "{italian}" -> italianQuizzes
             else -> spanishQuizzes
         } as List<Quiz>
 

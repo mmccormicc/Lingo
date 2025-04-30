@@ -67,13 +67,7 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
             contentScale = ContentScale.FillWidth
         )
 
-        Image(
-            painter = painterResource(id = pictureMatchViewModel.currentQuestion.pictureID),
-            contentDescription = "man",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.aspectRatio(1f)
-        )
-
+        // Initializing picture match
         if (!pictureMatchViewModel.initialized) {
             // Setting list of questions based on language
             pictureMatchViewModel.setQuestions(languageName)
@@ -82,6 +76,13 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
             // Was initialized
             pictureMatchViewModel.initialized = true
         }
+
+        Image(
+            painter = painterResource(id = pictureMatchViewModel.currentQuestion.pictureID),
+            contentDescription = "man",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.aspectRatio(1f)
+        )
 
         val answerOptions = pictureMatchViewModel.currentQuestion.options
 
