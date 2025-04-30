@@ -3,10 +3,13 @@ package com.example.lingo.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
@@ -21,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -30,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil3.compose.AsyncImage
 import com.example.lingo.R
 import com.example.lingo.Routes
 import com.example.lingo.data.Quiz
@@ -53,16 +58,15 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
     quizViewModel.setQuiz(quizNumber, languageName)
 
     Column(
-        Modifier.fillMaxSize(),
+        Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
         // Painting banner
-        Image(
-            painter = painterResource(id = imageResource),
+        AsyncImage(
+            model = imageResource,
             contentDescription = languageName + "Banner",
-            modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
-            contentScale = ContentScale.FillWidth
+            modifier = Modifier.fillMaxWidth()
         )
 
         // Quiz name text
@@ -81,7 +85,7 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
         Text(
             text = "Question " + (quizViewModel.questionNumber + 1) + "/" + quizViewModel.numQuestions,
             style = TextStyle(
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
@@ -96,7 +100,7 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
         Text(
             text = quizQuestion,
             style = TextStyle(
-                color = MaterialTheme.colorScheme.secondary,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
@@ -136,7 +140,7 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
         ) {
             // Home button
             FilledIconButton(
-                colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.onSurfaceVariant),
                 onClick = {
                     navController.navigate(Routes.homeScreen + "/$languageName")
                 },
@@ -146,6 +150,7 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
                     imageVector = Icons.Filled.Home,
                     contentDescription = "Home",
                     modifier = Modifier.size(150.dp),
+                    tint = Color.White
                 )
             }
         }

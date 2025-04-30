@@ -5,10 +5,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 
 import androidx.compose.material3.Text
@@ -26,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil3.compose.AsyncImage
 import com.example.lingo.R
 import com.example.lingo.Routes
 
@@ -43,17 +47,16 @@ fun HomeScreen(navController : NavController, languageName: String) {
     }
 
     Column(
-        Modifier.fillMaxSize(),
+        Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
 
         // Painting banner
-        Image(
-            painter = painterResource(id = imageResource),
+        AsyncImage(
+            model = imageResource,
             contentDescription = languageName + "Banner",
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.FillWidth
+            modifier = Modifier.fillMaxWidth()
         )
 
         // Practice column

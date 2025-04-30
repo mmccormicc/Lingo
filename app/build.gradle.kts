@@ -59,6 +59,8 @@ dependencies {
 
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.4")
 
+    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+
 
     // Jetpack Compose Integration
     implementation(libs.androidx.navigation.compose)

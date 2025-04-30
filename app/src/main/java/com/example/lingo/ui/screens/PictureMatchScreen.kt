@@ -3,11 +3,14 @@ package com.example.lingo.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
@@ -26,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil3.compose.AsyncImage
 import com.example.lingo.R
 import com.example.lingo.Routes
 import com.example.lingo.data.Quiz
@@ -55,16 +60,15 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
     }
 
     Column(
-        Modifier.fillMaxSize(),
+        Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
         // Painting banner
-        Image(
-            painter = painterResource(id = imageResource),
+        AsyncImage(
+            model = imageResource,
             contentDescription = languageName + "Banner",
-            modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
-            contentScale = ContentScale.FillWidth
+            modifier = Modifier.fillMaxWidth()
         )
 
         // Initializing picture match
@@ -77,11 +81,12 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
             pictureMatchViewModel.initialized = true
         }
 
-        Image(
-            painter = painterResource(id = pictureMatchViewModel.currentQuestion.pictureID),
-            contentDescription = "man",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.aspectRatio(1f)
+
+        // Painting picture match image
+        AsyncImage(
+            model = pictureMatchViewModel.currentQuestion.pictureID,
+            contentDescription = stringResource(pictureMatchViewModel.currentQuestion.pictureID),
+            modifier = Modifier.size(300.dp)
         )
 
         val answerOptions = pictureMatchViewModel.currentQuestion.options
@@ -108,7 +113,7 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
         ) {
             // Home button
             FilledIconButton(
-                colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.secondary),
+                colors = IconButtonDefaults.filledIconButtonColors(containerColor = MaterialTheme.colorScheme.onSurfaceVariant),
                 onClick = {
                     navController.navigate(Routes.homeScreen + "/$languageName")
                 },
@@ -118,6 +123,7 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
                     imageVector = Icons.Filled.Home,
                     contentDescription = "Home",
                     modifier = Modifier.size(150.dp),
+                    tint = Color.White
                 )
             }
         }
