@@ -21,12 +21,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.lingo.domain.BaseQuestionsViewModel
 import com.example.lingo.domain.PictureMatchViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun ColorChangeButton(pictureMatchViewModel: PictureMatchViewModel, isCorrect : Boolean, buttonText : String, key: Int) {
+fun ColorChangeButton(viewModel: BaseQuestionsViewModel, isCorrect : Boolean, buttonText : String, key: Int) {
 
     // Colors used by button
     val defaultColor = MaterialTheme.colorScheme.primary
@@ -64,7 +65,7 @@ fun ColorChangeButton(pictureMatchViewModel: PictureMatchViewModel, isCorrect : 
                     // Waiting for animation
                     delay(600)
                     // Going to next question
-                    pictureMatchViewModel.nextQuestion()
+                    viewModel.nextQuestion()
                 }
 
             }

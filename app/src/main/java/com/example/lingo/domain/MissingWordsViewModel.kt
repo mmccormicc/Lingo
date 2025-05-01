@@ -7,54 +7,55 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.lingo.R
 import com.example.lingo.data.PictureMatchQuestion
+import com.example.lingo.data.Quiz
+import com.example.lingo.data.QuizQuestion
 import kotlin.random.Random
 
 
-class PictureMatchViewModel(): ViewModel(), BaseQuestionsViewModel {
+class MissingWordsViewModel(): ViewModel(), BaseQuestionsViewModel {
 
-    var spanishQuestions: List<PictureMatchQuestion> = mutableListOf(
-            PictureMatchQuestion(R.drawable.man, 0, listOf("Hombre", "Hombro", "Mujer", "Hambre")),
-            PictureMatchQuestion(R.drawable.woman, 2, listOf("Nino", "Hombre", "Mujer", "Perro")),
-            PictureMatchQuestion(R.drawable.dog, 1, listOf("Gato", "Perro", "Caballo", "Lobo")),
-            PictureMatchQuestion(R.drawable.house, 3, listOf("Corcho", "Caso", "Escuela", "Casa"))
+    var spanishQuestions: MutableList<QuizQuestion> = mutableListOf(
+            QuizQuestion("Él (corrió/corre) en el parque ayer.", 0, listOf("corrió", "corre")),
+            QuizQuestion("Ellos (viven/vivirán) en Madrid el próximo año.", 1, listOf("viven", "vivirán")),
+            QuizQuestion("Yo (he leído/leo) muchos libros este mes.", 0, listOf("he leído", "leo")),
+            QuizQuestion("María (bailaba/baila) mientras llovía.", 0, listOf("bailaba", "baila"))
     )
 
-    var frenchQuestions: List<PictureMatchQuestion> = mutableListOf(
-        PictureMatchQuestion(R.drawable.man, 0, listOf("Homme", "Chat", "Femme", "Garcon")),
-        PictureMatchQuestion(R.drawable.woman, 2, listOf("Chienne", "Fille", "Femme", "Homme")),
-        PictureMatchQuestion(R.drawable.dog, 0, listOf("Chien", "Chat", "Loup", "Chatte")),
-        PictureMatchQuestion(R.drawable.house, 1, listOf("Ecole", "Maison", "Chambre", "Manoir"))
+    var frenchQuestions: MutableList<QuizQuestion> = mutableListOf(
+        QuizQuestion("Il (est allé/va) au marché ce matin.", 0, listOf("est allé", "va")),
+        QuizQuestion("Nous (mangeons/mangerons) chez nos amis demain.", 1, listOf("mangeons", "mangerons")),
+        QuizQuestion("Je (ferais/fais) du sport si j'avais le temps.", 0, listOf("ferais", "fais")),
+        QuizQuestion("Vous (aviez/avez) oublié vos clés hier.", 0, listOf("aviez", "avez"))
     )
 
-    var germanQuestions: List<PictureMatchQuestion> = mutableListOf(
-        PictureMatchQuestion(R.drawable.man, 3, listOf("Papa", "Frau", "Junge", "Mann")),
-        PictureMatchQuestion(R.drawable.woman, 2, listOf("Mama", "Madchen", "Frau", "Frosch")),
-        PictureMatchQuestion(R.drawable.dog, 1, listOf("Wolf", "Hund", "Katze", "Pferd")),
-        PictureMatchQuestion(R.drawable.house, 0, listOf("Haus", "Zimmer", "Schule", "Villa"))
+    val italianQuestions = mutableListOf(
+        QuizQuestion("Io (faccio/farei) ginnastica se avessi tempo.", 1, listOf("faccio", "farei")),
+        QuizQuestion("Noi (mangiamo/mangeremo) la pizza domani sera.", 1, listOf("mangiamo", "mangeremo")),
+        QuizQuestion("Voi (avevate/avete) dimenticato le chiavi ieri.", 0, listOf("avevate", "avete")),
+        QuizQuestion("(Andremo/Andavamo) al mare questo weekend.", 0, listOf("Andremo", "Andavamo"))
     )
 
-    var italianQuestions: List<PictureMatchQuestion> = mutableListOf(
-        PictureMatchQuestion(R.drawable.man, 0, listOf("Uomo", "Donna", "Ragazzo", "Nonno")),
-        PictureMatchQuestion(R.drawable.woman, 3, listOf("Uomo", "Ragazza", "Nonna", "Donna")),
-        PictureMatchQuestion(R.drawable.dog, 3, listOf("Cavalla", "Lupa", "Gatta", "Cagna")),
-        PictureMatchQuestion(R.drawable.house, 1, listOf("Palazzo", "Casa", "Scuola", "Camera"))
+    val germanQuestions = mutableListOf(
+        QuizQuestion("Ich (würde machen/mache) mehr Sport, wenn ich Zeit hätte.", 0, listOf("würde machen", "mache")),
+        QuizQuestion("Wir (essen/werden essen) morgen bei Freunden.", 1, listOf("essen", "werden essen")),
+        QuizQuestion("Wir (gehen/werden gehen) am Wochenende ins Kino.", 1, listOf("gehen", "werden gehen")),
+        QuizQuestion("(Hast du/Bringst du) den Bus heute Morgen genommen?", 0, listOf("Hast du", "Bringst du"))
     )
 
     // Holds list of questions not displayed in this rotation
-    var unseenQuestions: MutableList<PictureMatchQuestion> = mutableListOf()
+    var unseenQuestions: MutableList<QuizQuestion> = mutableListOf()
 
     // Holds list of questions that have been displayed this rotation
-    var seenQuestions: MutableList<PictureMatchQuestion> = mutableListOf()
+    var seenQuestions: MutableList<QuizQuestion> = mutableListOf()
 
     // Holds if picture match has been initialized
     var initialized: Boolean by mutableStateOf(false)
 
     // Holds current question. Starts as error question before random question is generated.
-    var currentQuestion: PictureMatchQuestion by mutableStateOf(PictureMatchQuestion(R.drawable.man, 0, listOf("Error", "Error", "Error", "Error")))
+    var currentQuestion: QuizQuestion by mutableStateOf(QuizQuestion("Error", 0, listOf("Error", "Error")))
 
     // Holds number of questions displayed, used to identify questions within composable
     var currentQuestionIndex: Int by mutableIntStateOf(0)
-
 
     override fun nextQuestion() {
         // Questions remaining
@@ -98,7 +99,7 @@ class PictureMatchViewModel(): ViewModel(), BaseQuestionsViewModel {
             "{german}" -> germanQuestions
             "{italian}" -> italianQuestions
             else -> spanishQuestions
-        } as MutableList<PictureMatchQuestion>
+        } as MutableList<QuizQuestion>
     }
 
 

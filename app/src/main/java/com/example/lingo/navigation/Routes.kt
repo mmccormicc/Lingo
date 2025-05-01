@@ -1,4 +1,4 @@
-package com.example.lingo
+package com.example.lingo.navigation
 
 object Routes {
     var languageSelectScreen = "language_select_screen"
@@ -8,4 +8,5 @@ object Routes {
     var quizScreen = "quiz_screen"
     var quizResultScreen = "quiz_result_screen"
     var pictureMatchScreen = "picture_match_screen"
+    var missingWordsScreen = "missing_words_screen"
 }

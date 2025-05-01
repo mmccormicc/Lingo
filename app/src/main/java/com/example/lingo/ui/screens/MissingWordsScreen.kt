@@ -15,25 +15,24 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.lingo.R
 import com.example.lingo.navigation.Routes
-import com.example.lingo.domain.PictureMatchViewModel
+import com.example.lingo.domain.MissingWordsViewModel
 import com.example.lingo.ui.components.ColorChangeButton
 
 @Composable
-fun PictureMatchScreen(navController : NavController, languageName: String) {
+fun MissingWordsScreen(navController : NavController, languageName: String) {
 
-    val pictureMatchViewModel: PictureMatchViewModel = viewModel()
+    val missingWordsViewModel: MissingWordsViewModel = viewModel()
 
     // Getting banner image depending on passed language name
     val imageResource = when (languageName.lowercase()) {
@@ -45,20 +44,13 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
     }
 
     // Initializing picture match
-    if (!pictureMatchViewModel.initialized) {
+    if (!missingWordsViewModel.initialized) {
         // Setting list of questions based on language
-        pictureMatchViewModel.setQuestions(languageName)
+        missingWordsViewModel.setQuestions(languageName)
         // Getting random question to start
-        pictureMatchViewModel.nextQuestion()
+        missingWordsViewModel.nextQuestion()
         // Was initialized
-        pictureMatchViewModel.initialized = true
-    }
-
-    val configuration = LocalConfiguration.current
-
-    val imageSize = when {
-        configuration.screenHeightDp < 800 -> 200.dp   // Small screens
-        else -> 300.dp                  // Medium / Large screens
+        missingWordsViewModel.initialized = true
     }
 
     Column(
@@ -70,32 +62,41 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
         AsyncImage(
             model = imageResource,
             contentDescription = languageName + "Banner",
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(bottom = 64.dp)
         )
 
-        // Painting current question image
-        AsyncImage(
-            model = pictureMatchViewModel.currentQuestion.pictureID,
-            contentDescription = stringResource(pictureMatchViewModel.currentQuestion.pictureID),
-            modifier = Modifier.size(imageSize)
+
+        // Current question
+        Text(
+            text = missingWordsViewModel.currentQuestion.question,
+            style = MaterialTheme.typography.displayMedium.copy(
+                color = MaterialTheme.colorScheme.onBackground
+            ),
+            modifier = Modifier.padding(12.dp)
         )
+
 
         // Getting options available for question
-        val answerOptions = pictureMatchViewModel.currentQuestion.options
+        val answerOptions = missingWordsViewModel.currentQuestion.options
 
         // Looping through each option for a question, keeping track of index
         for ((index, option) in answerOptions.withIndex()) {
 
             // Determining if option is correct or not
             var isCorrect = false;
-            if (index == pictureMatchViewModel.currentQuestion.answer) {
+            if (index == missingWordsViewModel.currentQuestion.answer) {
                 isCorrect = true;
             }
 
             // Custom option button that changes color depending on if answer is correct
-            ColorChangeButton(pictureMatchViewModel, isCorrect, option, pictureMatchViewModel.currentQuestionIndex)
+            ColorChangeButton(
+                missingWordsViewModel,
+                isCorrect,
+                option,
+                missingWordsViewModel.currentQuestionIndex
+            )
 
-        }
+            }
 
         // Home button column to align to bottom
         Column(

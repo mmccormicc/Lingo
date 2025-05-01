@@ -6,10 +6,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.lingo.Routes
 import com.example.lingo.ui.screens.FlashCardSelectScreen
 import com.example.lingo.ui.screens.HomeScreen
 import com.example.lingo.ui.screens.LanguageSelectScreen
+import com.example.lingo.ui.screens.MissingWordsScreen
 import com.example.lingo.ui.screens.PictureMatchScreen
 import com.example.lingo.ui.screens.QuizResultScreen
 import com.example.lingo.ui.screens.QuizScreen
@@ -69,6 +69,10 @@ fun AppNavigation() {
         composable(Routes.pictureMatchScreen+"/{languagename}") {
             var languageName = it.arguments?.getString("languagename")
             PictureMatchScreen(navController, languageName ?: "No language")
+        }
+        composable(Routes.missingWordsScreen+"/{languagename}") {
+            var languageName = it.arguments?.getString("languagename")
+            MissingWordsScreen(navController, languageName ?: "No language")
         }
     })
 }

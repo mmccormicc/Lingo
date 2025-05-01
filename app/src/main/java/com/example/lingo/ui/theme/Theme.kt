@@ -263,7 +263,14 @@ data class ColorFamily(
     val onColorContainer: Color
 )
 
-fun getFontsForHeight(screenHeightDp: Int, colorScheme: ColorScheme): Typography {
+@Composable
+fun getFontsForHeight(colorScheme: ColorScheme): Typography {
+    // Getting local configuration
+    val configuration = LocalConfiguration.current
+    // Getting screen height
+    val screenHeightDp = configuration.screenHeightDp
+
+
 
     // Determining scale for fonts based on screen height
     val scale = when {
@@ -315,7 +322,7 @@ fun LingoTheme(
   MaterialTheme(
       colorScheme = colors,
       // Defining font size based on screen height
-      typography = getFontsForHeight(screenSize.heightDp, colors)
+      typography = getFontsForHeight(colors)
   ) {
       // This box will always be drawn around screen content
       // Fills with background depending on light or dark mode

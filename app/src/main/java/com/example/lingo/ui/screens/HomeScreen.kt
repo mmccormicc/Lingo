@@ -1,7 +1,6 @@
 package com.example.lingo.ui.screens
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,18 +20,11 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.lingo.R
-import com.example.lingo.Routes
+import com.example.lingo.navigation.Routes
 
 
 @Composable
@@ -107,7 +99,7 @@ fun HomeScreen(navController : NavController, languageName: String) {
                     Button(
                         modifier = Modifier.padding(8.dp),
                         onClick = {
-                            navController.navigate(Routes.languageSelectScreen)
+                            navController.navigate(Routes.missingWordsScreen + "/$languageName")
                         }
                     ) {
                         Text(
@@ -177,20 +169,20 @@ fun HomeScreen(navController : NavController, languageName: String) {
             // Change language button
             OutlinedButton(
                 modifier = Modifier.padding(8.dp),
-                border = BorderStroke(width = 3.dp, color = Color.Black),
+                border = BorderStroke(width = 3.dp, color = MaterialTheme.colorScheme.onBackground),
                 onClick = {
                     navController.navigate(Routes.languageSelectScreen)
                 }
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.back_arrow),
+                AsyncImage(
+                    model = R.drawable.back_arrow,
                     contentDescription = "Back Arrow",
                     modifier = Modifier.size(32.dp)
                 )
                 Text(
                     text = "Change Language",
                     style = MaterialTheme.typography.displaySmall.copy(
-                        color = Color.Black
+                        color = MaterialTheme.colorScheme.onBackground
                     ),
                     modifier = Modifier.padding(8.dp)
                 )
