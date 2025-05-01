@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.lingo.ui.screens.FlashCardSelectScreen
+import com.example.lingo.ui.screens.FlashcardScreen
 import com.example.lingo.ui.screens.HomeScreen
 import com.example.lingo.ui.screens.LanguageSelectScreen
 import com.example.lingo.ui.screens.MissingWordsScreen
@@ -18,7 +19,7 @@ import com.example.lingo.ui.screens.QuizSelectScreen
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Routes.languageSelectScreen/*Routes.homeScreen+"/{french}"*/, builder =  {
+    NavHost(navController = navController, startDestination = Routes.languageSelectScreen, builder =  {
         composable(Routes.languageSelectScreen) {
             LanguageSelectScreen(navController)
         }
@@ -38,8 +39,8 @@ fun AppNavigation() {
             Routes.quizScreen+"/{languagename}/{quiznumber}/{quizname}",
             // Need to define types of arguments as some are ints
                 arguments = listOf(
-                navArgument("quiznumber") { type = NavType.IntType },
                 navArgument("languagename") { type = NavType.StringType },
+                navArgument("quiznumber") { type = NavType.IntType },
                 navArgument("quizname") { type = NavType.StringType }
         )) {
             // Parsing string for agruments
@@ -73,6 +74,19 @@ fun AppNavigation() {
         composable(Routes.missingWordsScreen+"/{languagename}") {
             var languageName = it.arguments?.getString("languagename")
             MissingWordsScreen(navController, languageName ?: "No language")
+        }
+        composable(
+            Routes.flashcardScreen+"/{languagename}/{flashcardnumber}",
+            // Need to define types of arguments as some are ints
+            arguments = listOf(
+                navArgument("languagename") { type = NavType.StringType },
+                navArgument("flashcardnumber") { type = NavType.IntType }
+            )) {
+            // Parsing string for arguments
+            var languageName = it.arguments?.getString("languagename")
+            var quizNumber = it.arguments?.getInt("quiznumber")
+            // Calling flashcard screen composable with arguments
+            FlashcardScreen(navController, languageName ?: "No language", quizNumber ?: -1)
         }
     })
 }

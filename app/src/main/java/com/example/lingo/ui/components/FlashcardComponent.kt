@@ -1,0 +1,83 @@
+package com.example.lingo.ui.components
+
+import android.R
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.lingo.domain.BaseQuestionsViewModel
+import com.example.lingo.domain.FlashcardViewModel
+import com.example.lingo.domain.PictureMatchViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+@Composable
+fun FlashcardComponent(viewModel: FlashcardViewModel, englishText: String, translatedText: String) {
+
+    val englishColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val translatedColor = MaterialTheme.colorScheme.primary
+
+    // Current button color
+    var flashcardText by remember {mutableStateOf(englishText)}
+
+    var flashcardColor by remember { mutableStateOf(englishColor) }
+
+    var showingEnglish by remember { mutableStateOf(true) };
+
+
+    // Clickable button background
+    Surface(
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable {
+                if (showingEnglish) {
+                    flashcardText = translatedText
+                    flashcardColor = translatedColor
+                    showingEnglish = false
+                } else {
+                    flashcardText= englishText
+                    flashcardColor = englishColor
+                    showingEnglish = true
+                }
+            }
+            .fillMaxWidth()
+            .aspectRatio(1f),
+
+        color = flashcardColor,
+        shape = MaterialTheme.shapes.large // Use a shape from the Material 3 theme
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            // Button text
+            Text(
+                text = flashcardText,
+                style = MaterialTheme.typography.displayMedium.copy(
+                    color = MaterialTheme.colorScheme.onPrimary
+                ),
+                modifier = Modifier.padding(8.dp),
+            )
+        }
+    }
+}
+

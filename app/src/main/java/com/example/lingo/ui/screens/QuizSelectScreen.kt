@@ -51,7 +51,7 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
     }
 
     // List of dropdown options
-    val options = listOf("Quiz 1", "Quiz 2")
+    val options = listOf("Noun Quiz", "Verb Quiz")
     // If dropdown menu is expanded or not
     var expanded by remember { mutableStateOf(false) }
     // Option selected in dropdown menu

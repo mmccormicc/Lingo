@@ -50,7 +50,7 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
         else -> R.drawable.germany_banner // Image to show if the name doesn't match
     }
 
-    val options = listOf("Option A", "Option B", "Option C", "Option D")
+    val options = listOf("Noun Flashcards", "Verb Flashcards")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
@@ -94,13 +94,21 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                options.forEach { selectionOption ->
+                options.forEachIndexed { index, selectionOption ->
                     DropdownMenuItem(
                         text = {Text(text = selectionOption, style = TextStyle(
                             fontSize = 24.sp))},
                         onClick = {
+                            // Updating text on drop down menu
                             selectedOptionText = selectionOption
+                            // Minimizing menu
                             expanded = false
+
+                            // Need to capture value of quiz index within onClick method
+                            val correctFlashcardIndex = index
+
+                            // Navigating to quiz from selected option
+                            navController.navigate(Routes.flashcardScreen + "/$languageName/$correctFlashcardIndex")
                         }
                     )
                 }

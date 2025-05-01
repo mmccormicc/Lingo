@@ -9,4 +9,5 @@ object Routes {
     var quizResultScreen = "quiz_result_screen"
     var pictureMatchScreen = "picture_match_screen"
     var missingWordsScreen = "missing_words_screen"
+    var flashcardScreen = "flashcard_screen"
 }
