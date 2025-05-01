@@ -1,19 +1,31 @@
 package com.example.compose
-import android.app.Activity
-import android.os.Build
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
+import com.example.lingo.ui.theme.ScreenSize
 import com.example.ui.theme.AppTypography
+import androidx.compose.material3.Typography
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -251,15 +263,49 @@ data class ColorFamily(
     val onColorContainer: Color
 )
 
-val unspecified_scheme = ColorFamily(
-    Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
-)
+fun getFontsForHeight(screenHeightDp: Int, colorScheme: ColorScheme): Typography {
+
+    // Determining scale for fonts based on screen height
+    val scale = when {
+        screenHeightDp < 800 -> 0.8f   // Small screens
+        screenHeightDp < 1000 -> 1.15f    // Medium screens
+        else -> 1.25f                   // Large screens
+    }
+
+    // Applying scale to fonts
+    fun scaledStyle(baseSize: Int) = TextStyle(
+        fontSize = (baseSize * scale).sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        color = colorScheme.primary
+    )
+
+    // Returning TextStyles defaulted to medium phone. These get scaled depending on screen height.
+    return Typography(
+        displayLarge = scaledStyle(48),
+        displayMedium = scaledStyle(32),
+        displaySmall = scaledStyle(24),
+    )
+}
 
 @Composable
 fun LingoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
+
+    // Getting local configuration
+    val configuration = LocalConfiguration.current
+
+    // Getting screen width and height
+    val screenSize = remember(configuration) {
+        ScreenSize(
+            widthDp = configuration.screenWidthDp,
+            heightDp = configuration.screenHeightDp
+        )
+    }
+
+    // Defining colors based on dark or light mode
     val colors = if (darkTheme) {
         darkScheme
     } else {
@@ -267,9 +313,28 @@ fun LingoTheme(
     }
 
   MaterialTheme(
-    colorScheme = colors,
-    typography = AppTypography,
-    content = content
-  )
+      colorScheme = colors,
+      // Defining font size based on screen height
+      typography = getFontsForHeight(screenSize.heightDp, colors)
+  ) {
+      // This box will always be drawn around screen content
+      // Fills with background depending on light or dark mode
+      Box(
+          modifier = Modifier
+              .fillMaxSize()
+              .background(colors.background), // Set background color
+          contentAlignment = Alignment.Center
+      ) {
+          // This box sets the max displayable width of the app
+          // It is useful to limit drawable space horizontally with tablets
+          Box(
+              modifier = Modifier
+                  .fillMaxHeight()
+                  .widthIn(max = 500.dp) // Limit width
+          ) {
+              content()
+          }
+      }
+  }
 }
 

@@ -68,24 +68,16 @@ fun QuizResultScreen(navController : NavController, languageName: String, quizNa
         // Quiz name text
         Text(
             text = quizName,
-            style = TextStyle(
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Center,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
-            ),
+            style = MaterialTheme.typography.displayMedium,
             modifier = Modifier.padding(top = 32.dp, bottom = 32.dp)
         )
 
         // Quiz Result
         Text(
             text = "Score " + correctQuestions + "/" + numQuestions,
-            style = TextStyle(
-                color = Color.Green,
-                textAlign = TextAlign.Center,
-                fontSize = 48.sp,
-                fontWeight = FontWeight.Bold
-            ),
+            style = MaterialTheme.typography.displayLarge.copy(
+                color = Color.Green
+            )
         )
 
         // Home button column to align to bottom
@@ -100,12 +92,12 @@ fun QuizResultScreen(navController : NavController, languageName: String, quizNa
                 onClick = {
                     navController.navigate(Routes.homeScreen + "/$languageName")
                 },
-                modifier = Modifier.size(150.dp).padding(bottom = 100.dp)
+                modifier = Modifier.size(80.dp).padding(bottom = 20.dp)
             ) {
                 Icon(
                     imageVector = Icons.Filled.Home,
                     contentDescription = "Home",
-                    modifier = Modifier.size(150.dp),
+                    modifier = Modifier.size(80.dp),
                     tint = Color.White
                 )
             }

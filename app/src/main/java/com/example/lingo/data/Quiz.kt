@@ -1,5 +1,5 @@
 package com.example.lingo.data
 
-class Quiz(
+data class Quiz(
     val questions : List<QuizQuestion>
 )

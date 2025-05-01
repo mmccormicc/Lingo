@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -47,9 +48,10 @@ fun HomeScreen(navController : NavController, languageName: String) {
     }
 
     Column(
-        Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars),
+        Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
     ) {
 
         // Painting banner
@@ -59,133 +61,141 @@ fun HomeScreen(navController : NavController, languageName: String) {
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Practice column
         Column(
-            //Modifier.fillMaxSize(),
+            Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+
         ) {
-            // Practice text
-            Text(
-                text = "Practice",
-                style = TextStyle(
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center,
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold
+
+            // Practice column
+            Column(
+                //Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                // Practice text
+                Text(
+                    text = "Practice",
+                    style = MaterialTheme.typography.displayMedium
+
                 )
 
-            )
-
-            // Practice buttons surrounded by border
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color.LightGray),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Flashcards button
-                Button(
-                    modifier = Modifier.padding(16.dp),
-                    onClick = {
-                        navController.navigate(Routes.flashcardSelectScreen + "/$languageName")
-                    }
+                // Practice buttons surrounded by border
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Color.LightGray),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = "Flashcards",
-                        style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
-
-                // Missing words button
-                Button(
-                    modifier = Modifier.padding(16.dp),
-                    onClick = {
-                        navController.navigate(Routes.languageSelectScreen)
+                    // Flashcards button
+                    Button(
+                        modifier = Modifier.padding(8.dp),
+                        onClick = {
+                            navController.navigate(Routes.flashcardSelectScreen + "/$languageName")
+                        }
+                    ) {
+                        Text(
+                            text = "Flashcards",
+                            style = MaterialTheme.typography.displaySmall.copy(
+                                color = MaterialTheme.colorScheme.background
+                            ),
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
-                ) {
-                    Text(
-                        text = "Missing Words",
-                        style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
-                        modifier = Modifier.padding(16.dp)
-                    )
-                }
 
-                // Picture match button
-                Button(
-                    modifier = Modifier.padding(16.dp),
-                    onClick = {
-                        navController.navigate(Routes.pictureMatchScreen + "/$languageName")
+                    // Missing words button
+                    Button(
+                        modifier = Modifier.padding(8.dp),
+                        onClick = {
+                            navController.navigate(Routes.languageSelectScreen)
+                        }
+                    ) {
+                        Text(
+                            text = "Missing Words",
+                            style = MaterialTheme.typography.displaySmall.copy(
+                                color = MaterialTheme.colorScheme.background
+                            ),
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
-                ) {
-                    Text(
-                        text = "Picture Match",
-                        style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
-                        modifier = Modifier.padding(16.dp)
-                    )
+
+                    // Picture match button
+                    Button(
+                        modifier = Modifier.padding(8.dp),
+                        onClick = {
+                            navController.navigate(Routes.pictureMatchScreen + "/$languageName")
+                        }
+                    ) {
+                        Text(
+                            text = "Picture Match",
+                            style = MaterialTheme.typography.displaySmall.copy(
+                                color = MaterialTheme.colorScheme.background
+                            ),
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
                 }
             }
-        }
 
-        // Test column
-        Column(
-            //Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            // Test text
-            Text(
-                text = "Test",
-                style = TextStyle(
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center,
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold
+            // Test column
+            Column(
+                //Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                // Test text
+                Text(
+                    text = "Test",
+                    style = MaterialTheme.typography.displayMedium,
                 )
-            )
 
-            // Test buttons surrounded by border
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color.LightGray),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // quizzes button
-                Button(
-                    modifier = Modifier.padding(16.dp),
-                    onClick = {
-                        navController.navigate(Routes.quizSelectScreen  + "/$languageName")
-                    }
+                // Test buttons surrounded by border
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Color.LightGray),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = "Quizzes",
-                        style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
-                        modifier = Modifier.padding(16.dp)
-                    )
+                    // Quizzes button
+                    Button(
+                        modifier = Modifier.padding(8.dp),
+                        onClick = {
+                            navController.navigate(Routes.quizSelectScreen + "/$languageName")
+                        }
+                    ) {
+                        Text(
+                            text = "Quizzes",
+                            style = MaterialTheme.typography.displaySmall.copy(
+                                color = MaterialTheme.colorScheme.background
+                            ),
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+
                 }
-
             }
-        }
 
-        // Change language button
-        OutlinedButton(
-            modifier = Modifier.padding(16.dp),
-            border = BorderStroke(width = 3.dp, color = Color.Black),
-            onClick = {
-                navController.navigate(Routes.languageSelectScreen)
+            // Change language button
+            OutlinedButton(
+                modifier = Modifier.padding(8.dp),
+                border = BorderStroke(width = 3.dp, color = Color.Black),
+                onClick = {
+                    navController.navigate(Routes.languageSelectScreen)
+                }
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.back_arrow),
+                    contentDescription = "Back Arrow",
+                    modifier = Modifier.size(32.dp)
+                )
+                Text(
+                    text = "Change Language",
+                    style = MaterialTheme.typography.displaySmall.copy(
+                        color = Color.Black
+                    ),
+                    modifier = Modifier.padding(8.dp)
+                )
             }
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.back_arrow),
-                contentDescription = "Italian Flag",
-                modifier = Modifier.size(50.dp)
-            )
-            Text(
-                text = "Change Language",
-                style = TextStyle(fontSize = 28.sp, color = Color.Black, fontWeight = FontWeight.Bold),
-                modifier = Modifier.padding(16.dp)
-            )
-        }
 
+        }
     }
 }

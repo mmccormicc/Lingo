@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -72,23 +73,15 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
         // Quiz name text
         Text(
             text = quizName,
-            style = TextStyle(
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Center,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
-            ),
+            style = MaterialTheme.typography.displayMedium,
             modifier = Modifier.padding(top = 32.dp, bottom = 8.dp)
         )
 
         // Quiz progress text
         Text(
             text = "Question " + (quizViewModel.questionNumber + 1) + "/" + quizViewModel.numQuestions,
-            style = TextStyle(
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.displaySmall.copy(
+                color = MaterialTheme.colorScheme.onBackground
             ),
             modifier = Modifier.padding(bottom = 32.dp)
         )
@@ -99,11 +92,8 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
         // Current quiz question text
         Text(
             text = quizQuestion,
-            style = TextStyle(
-                color = MaterialTheme.colorScheme.onBackground,
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.displaySmall.copy(
+                color = MaterialTheme.colorScheme.onBackground
             ),
            modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -126,8 +116,10 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
             ) {
                 Text(
                     text = option,
-                    style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
-                    modifier = Modifier.padding(16.dp)
+                    style = MaterialTheme.typography.displaySmall.copy(
+                        color = MaterialTheme.colorScheme.background
+                    ),
+                    modifier = Modifier.padding(8.dp)
                 )
             }
         }
@@ -144,12 +136,12 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
                 onClick = {
                     navController.navigate(Routes.homeScreen + "/$languageName")
                 },
-                modifier = Modifier.size(150.dp).padding(bottom = 100.dp)
+                modifier = Modifier.size(80.dp).padding(bottom = 20.dp)
             ) {
                 Icon(
                     imageVector = Icons.Filled.Home,
                     contentDescription = "Home",
-                    modifier = Modifier.size(150.dp),
+                    modifier = Modifier.size(80.dp),
                     tint = Color.White
                 )
             }

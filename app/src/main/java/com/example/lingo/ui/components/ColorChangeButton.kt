@@ -1,5 +1,6 @@
 package com.example.lingo.ui.components
 
+import android.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -75,13 +76,10 @@ fun ColorChangeButton(pictureMatchViewModel: PictureMatchViewModel, isCorrect : 
         // Button text
         Text(
             text = buttonText,
-            style = TextStyle(
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.displayMedium.copy(
+                color = MaterialTheme.colorScheme.background
             ),
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(8.dp),
         )
     }
 }

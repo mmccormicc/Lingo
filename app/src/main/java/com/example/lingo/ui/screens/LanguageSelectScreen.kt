@@ -1,14 +1,19 @@
 package com.example.lingo.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 
@@ -17,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.lingo.R
 import com.example.lingo.Routes
+import com.example.lingo.ui.theme.LocalScreenSize
 
 
 @Composable
@@ -36,19 +43,10 @@ fun LanguageSelectScreen(navController: NavController) {
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
 
-        // Trying to debug theme not applying
-        //Text(text = "Primary: ${MaterialTheme.colorScheme.primary}", color = MaterialTheme.colorScheme.primary)
-
         // Heading language selection text
         Text(
             text = "Choose a\nLanguage to\nLearn",
-            style = TextStyle(
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Center,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold
-            )
-
+            style = MaterialTheme.typography.displayMedium
         )
 
         // Spanish button
@@ -65,7 +63,7 @@ fun LanguageSelectScreen(navController: NavController) {
             )
             Text(
                 text = "Spanish",
-                style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -84,7 +82,7 @@ fun LanguageSelectScreen(navController: NavController) {
             )
             Text(
                 text = "French",
-                style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -103,7 +101,7 @@ fun LanguageSelectScreen(navController: NavController) {
             )
             Text(
                 text = "German",
-                style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -122,9 +120,16 @@ fun LanguageSelectScreen(navController: NavController) {
             )
             Text(
                 text = "Italian",
-                style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.displaySmall,
                 modifier = Modifier.padding(16.dp)
             )
         }
+
+        val configuration = LocalConfiguration.current
+        // This adds a box to the bottom of the screen for some blank space based on screen height
+        Box(
+            modifier = Modifier
+                .heightIn(min = (configuration.screenHeightDp/8).dp) // Limit width
+        )
     }
 }

@@ -81,14 +81,14 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
             pictureMatchViewModel.initialized = true
         }
 
-
-        // Painting picture match image
+        // Painting current question image
         AsyncImage(
             model = pictureMatchViewModel.currentQuestion.pictureID,
             contentDescription = stringResource(pictureMatchViewModel.currentQuestion.pictureID),
             modifier = Modifier.size(300.dp)
         )
 
+        // Getting options available for question
         val answerOptions = pictureMatchViewModel.currentQuestion.options
 
         // Looping through each option for a question, keeping track of index
@@ -117,12 +117,12 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
                 onClick = {
                     navController.navigate(Routes.homeScreen + "/$languageName")
                 },
-                modifier = Modifier.size(150.dp).padding(bottom = 100.dp)
+                modifier = Modifier.size(80.dp).padding(bottom = 20.dp)
             ) {
                 Icon(
                     imageVector = Icons.Filled.Home,
                     contentDescription = "Home",
-                    modifier = Modifier.size(150.dp),
+                    modifier = Modifier.size(80.dp),
                     tint = Color.White
                 )
             }
