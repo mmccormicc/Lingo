@@ -84,9 +84,9 @@ fun AppNavigation() {
             )) {
             // Parsing string for arguments
             var languageName = it.arguments?.getString("languagename")
-            var quizNumber = it.arguments?.getInt("quiznumber")
+            var flashcardNumber = it.arguments?.getInt("flashcardnumber")
             // Calling flashcard screen composable with arguments
-            FlashcardScreen(navController, languageName ?: "No language", quizNumber ?: -1)
+            FlashcardScreen(navController, languageName ?: "No language", flashcardNumber ?: -1)
         }
     })
 }

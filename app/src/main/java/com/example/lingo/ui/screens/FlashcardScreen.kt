@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,8 +46,15 @@ fun FlashcardScreen(navController : NavController, languageName: String, flashca
         else -> R.drawable.germany_banner // Image to show if the name doesn't match
     }
 
-    // Setting quiz based on language and quiz number selected
-    flashcardViewModel.setFlashcards(flashcardNumber, languageName)
+    // Initializing picture match
+    if (!flashcardViewModel.initialized) {
+        // Setting list of questions based on language
+        flashcardViewModel.setFlashcards(flashcardNumber, languageName)
+        // Getting random question to start
+        flashcardViewModel.nextCard()
+        // Was initialized
+        flashcardViewModel.initialized = true
+    }
 
     Column(
         Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars),
@@ -60,8 +68,8 @@ fun FlashcardScreen(navController : NavController, languageName: String, flashca
             modifier = Modifier.fillMaxWidth()
         )
 
-        FlashcardComponent(flashcardViewModel, "Start", "End")
-
+        println("RECOMPOSED BITCH")
+        FlashcardComponent(flashcardViewModel)
 
 
         // Home button column to align to bottom

@@ -30,6 +30,57 @@ class FlashcardViewModel(): ViewModel() {
     var spanishCards: List<FlashcardCollection> = listOf(spanishNounCards, spanishVerbCards)
 
 
+    var frenchNounCards: FlashcardCollection = FlashcardCollection(mutableListOf(
+        Flashcard("Man", "Homme"),
+        Flashcard("Woman", "Femme"),
+        Flashcard("House", "Maison"),
+        Flashcard("Dog", "Chien"),
+    ))
+
+    var frenchVerbCards: FlashcardCollection = FlashcardCollection(mutableListOf(
+        Flashcard("To run", "Courir"),
+        Flashcard("To sleep", "Dormir"),
+        Flashcard("To eat", "Manger"),
+        Flashcard("To work", "Travailler"),
+    ))
+
+    var frenchCards: List<FlashcardCollection> = listOf(frenchNounCards, frenchVerbCards)
+
+
+    var germanNounCards: FlashcardCollection = FlashcardCollection(mutableListOf(
+        Flashcard("Man", "Mann"),
+        Flashcard("Woman", "Frau"),
+        Flashcard("House", "Haus"),
+        Flashcard("Dog", "Hund"),
+    ))
+
+    var germanVerbCards: FlashcardCollection = FlashcardCollection(mutableListOf(
+        Flashcard("To run", "Laufen"),
+        Flashcard("To sleep", "Schlafen"),
+        Flashcard("To eat", "Essen"),
+        Flashcard("To work", "Arbeiten"),
+    ))
+
+    var germanCards: List<FlashcardCollection> = listOf(germanNounCards, germanVerbCards)
+
+
+    var italianNounCards: FlashcardCollection = FlashcardCollection(mutableListOf(
+        Flashcard("Man", "Uomo"),
+        Flashcard("Woman", "Donna"),
+        Flashcard("House", "Casa"),
+        Flashcard("Dog", "Cagna"),
+    ))
+
+    var italianVerbCards: FlashcardCollection = FlashcardCollection(mutableListOf(
+        Flashcard("To run", "Correre"),
+        Flashcard("To sleep", "Dormire"),
+        Flashcard("To eat", "Mangiare"),
+        Flashcard("To work", "Lavorare"),
+    ))
+
+    var italianCards: List<FlashcardCollection> = listOf(italianNounCards, italianVerbCards)
+
+
     // Holds current quiz
     var currentLanguageFlashcards: FlashcardCollection by mutableStateOf(FlashcardCollection(mutableListOf()))
 
@@ -49,13 +100,16 @@ class FlashcardViewModel(): ViewModel() {
     var currentCardIndex: Int by mutableIntStateOf(0)
 
     fun nextCard() {
+        println("NEXT CARD")
         // Questions remaining
         if (unseenCards.size > 1) {
             println("Has next question")
             // Get random index in range of unseen question list size
             var nextCardIndex = Random.nextInt(0, unseenCards.size)
+
+            val nextCard = unseenCards.get(nextCardIndex)
             // Set current question from index
-            currentCard = unseenCards.get(nextCardIndex)
+            currentCard = Flashcard(nextCard.englishSide, nextCard.translatedSide)
             // Adding to seen questions
             seenCards.add(currentCard)
             // Removing from unseen questions
@@ -84,9 +138,9 @@ class FlashcardViewModel(): ViewModel() {
         // Getting list of quizzes depending on selected language
         val languageFlashcards = when (languageName.lowercase()) {
             "{spanish}" -> spanishCards
-            "{french}" -> spanishCards
-            "{german}" -> spanishCards
-            "{italian}" -> spanishCards
+            "{french}" -> frenchCards
+            "{german}" -> germanCards
+            "{italian}" -> italianCards
             else -> spanishCards
         } as List<FlashcardCollection>
 
