@@ -3,15 +3,18 @@ package com.example.lingo.domain
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.lingo.R
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.lingo.data.Quiz
 import com.example.lingo.data.QuizQuestion
+import com.example.lingo.data.QuizScore
+import com.example.lingo.network.QuizRepository
+import kotlinx.coroutines.launch
 
 
-class QuizViewModel(): ViewModel() {
+class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
 
     // Spanish quizzes
     var spanishQuiz1: Quiz =
@@ -137,4 +140,33 @@ class QuizViewModel(): ViewModel() {
         return quiz.questions[questionNumber]
     }
 
+    // Submit new quiz score to server
+    fun submitScoreToServer(deviceId: String, language: String, quizName: String) {
+        val score = QuizScore(deviceId, language, quizName, correctAnswers)
+        viewModelScope.launch {
+            try {
+                val response = repository.submitScore(score)
+                if (response.isSuccessful) {
+                    // Handle success
+                } else {
+                    // Handle error
+                }
+            } catch (e: Exception) {
+                // Handle exception
+            }
+        }
+    }
+
+}
+
+// Factory for creating view model with access to repository
+class QuizViewModelFactory(
+    private val repository: QuizRepository
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(QuizViewModel::class.java)) {
+            return QuizViewModel(repository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

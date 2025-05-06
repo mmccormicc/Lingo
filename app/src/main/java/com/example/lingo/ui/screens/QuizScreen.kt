@@ -18,6 +18,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,11 +29,16 @@ import coil3.compose.AsyncImage
 import com.example.lingo.R
 import com.example.lingo.navigation.Routes
 import com.example.lingo.domain.QuizViewModel
+import com.example.lingo.domain.QuizViewModelFactory
+import com.example.lingo.network.QuizRepository
+import com.example.lingo.network.RetrofitProvider
 
 @Composable
 fun QuizScreen(navController : NavController, languageName: String, quizNumber: Int, quizName: String) {
 
-    val quizViewModel: QuizViewModel = viewModel()
+
+    val repository = remember { QuizRepository(RetrofitProvider.quizApiService) }
+    val quizViewModel: QuizViewModel = viewModel(factory = QuizViewModelFactory(repository))
 
     // Getting banner image depending on passed language name
     val imageResource = when (languageName.lowercase()) {

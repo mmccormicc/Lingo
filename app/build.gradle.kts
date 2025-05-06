@@ -96,4 +96,7 @@ dependencies {
 
     // OkHttp logging interceptor for debugging
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // Mock web server
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
 }
