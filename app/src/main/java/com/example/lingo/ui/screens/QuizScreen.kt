@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -32,6 +33,7 @@ import com.example.lingo.domain.QuizViewModel
 import com.example.lingo.domain.QuizViewModelFactory
 import com.example.lingo.network.QuizRepository
 import com.example.lingo.network.RetrofitProvider
+import com.example.lingo.utils.DeviceIdManager
 
 @Composable
 fun QuizScreen(navController : NavController, languageName: String, quizNumber: Int, quizName: String) {
@@ -39,6 +41,8 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
 
     val repository = remember { QuizRepository(RetrofitProvider.quizApiService) }
     val quizViewModel: QuizViewModel = viewModel(factory = QuizViewModelFactory(repository))
+
+    val context = LocalContext.current
 
     // Getting banner image depending on passed language name
     val imageResource = when (languageName.lowercase()) {
@@ -103,6 +107,8 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
                     if(quizViewModel.nextQuestion(index)) {
                         val numQuestions = quizViewModel.numQuestions
                         val correctAnswers = quizViewModel.correctAnswers
+
+                        quizViewModel.submitScore(DeviceIdManager.getOrCreateDeviceId(context), languageName, quizName)
 
                         navController.navigate(Routes.quizResultScreen + "/$languageName/$quizName/$numQuestions/$correctAnswers")
                     }

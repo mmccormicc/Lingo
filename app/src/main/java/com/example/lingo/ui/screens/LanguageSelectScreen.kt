@@ -129,6 +129,6 @@ fun LanguageSelectScreen(navController: NavController) {
                 modifier = Modifier.padding(16.dp)
             )
         }
-        
+
     }
 }

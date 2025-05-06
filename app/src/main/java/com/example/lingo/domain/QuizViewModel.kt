@@ -1,5 +1,6 @@
 package com.example.lingo.domain
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -11,7 +12,12 @@ import com.example.lingo.data.Quiz
 import com.example.lingo.data.QuizQuestion
 import com.example.lingo.data.QuizScore
 import com.example.lingo.network.QuizRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import java.io.IOException
 
 
 class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
@@ -141,21 +147,67 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
     }
 
     // Submit new quiz score to server
-    fun submitScoreToServer(deviceId: String, language: String, quizName: String) {
+    fun submitScore(deviceId: String, language: String, quizName: String) {
         val score = QuizScore(deviceId, language, quizName, correctAnswers)
+        // Launching coroutine
         viewModelScope.launch {
             try {
+                // Call repository to submit the score
                 val response = repository.submitScore(score)
                 if (response.isSuccessful) {
-                    // Handle success
+                    Log.d("QuizViewModel", "Score submitted successfully")
                 } else {
-                    // Handle error
+                    Log.e("QuizViewModel", "Server error: ${response.code()} ${response.message()}")
                 }
+            } catch (e: HttpException) {
+                when (e.code()) {
+                    400 -> Log.e("QuizViewModel", "Bad Request: ${e.message()}")
+                    401 -> Log.e("QuizViewModel", "Unauthorized")
+                    404 -> Log.e("QuizViewModel", "Not Found")
+                    500 -> Log.e("QuizViewModel", "Server Error")
+                    else -> Log.e("QuizViewModel", "HTTP error ${e.code()}: ${e.message()}")
+                }
+            } catch (e: IOException) {
+                Log.e("QuizViewModel", "Network error", e)
             } catch (e: Exception) {
-                // Handle exception
+                Log.e("QuizViewModel", "Unexpected error", e)
             }
         }
     }
+
+    private val _scoresMap = MutableStateFlow<Map<String, Int>>(emptyMap())
+    val scoresMap: StateFlow<Map<String, Int>> = _scoresMap
+
+    // Retrieve a quiz score based on deviceId, language, and quiz nae
+    fun getScore(deviceId: String, language: String, quizName: String) {
+        viewModelScope.launch {
+            try {
+                // Call repository to get the score
+                val response = repository.getScore(deviceId, language, quizName)
+                if (response.isSuccessful) {
+                    response.body()?.score?.let { score ->
+                        _scoresMap.update { it + (quizName to score) }
+                    }
+                } else {
+                    Log.e("QuizViewModel", "Server error: ${response.code()} ${response.message()}")
+                }
+            } catch (e: HttpException) {
+                when (e.code()) {
+                    400 -> Log.e("QuizViewModel", "Bad Request: ${e.message()}")
+                    401 -> Log.e("QuizViewModel", "Unauthorized")
+                    404 -> Log.e("QuizViewModel", "Not Found")
+                    500 -> Log.e("QuizViewModel", "Server Error")
+                    else -> Log.e("QuizViewModel", "HTTP error ${e.code()}: ${e.message()}")
+                }
+            } catch (e: IOException) {
+                Log.e("QuizViewModel", "Network error", e)
+            } catch (e: Exception) {
+                Log.e("QuizViewModel", "Unexpected error", e)
+            }
+        }
+    }
+
+
 
 }
 

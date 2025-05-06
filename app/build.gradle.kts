@@ -83,6 +83,12 @@ dependencies {
     // JSON serialization library, works with the Kotlin serialization plugin.
     implementation(libs.kotlinx.serialization.json)
 
+    // Testing coroutines
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
+    // MockK
+    testImplementation("io.mockk:mockk:1.13.5")
+
 
     // Network Imports
 
