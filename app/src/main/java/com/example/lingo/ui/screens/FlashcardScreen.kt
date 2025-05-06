@@ -68,7 +68,6 @@ fun FlashcardScreen(navController : NavController, languageName: String, flashca
             modifier = Modifier.fillMaxWidth()
         )
 
-        println("RECOMPOSED BITCH")
         FlashcardComponent(flashcardViewModel)
 
 

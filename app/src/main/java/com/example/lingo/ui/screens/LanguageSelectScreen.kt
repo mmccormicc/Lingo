@@ -4,8 +4,10 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -31,7 +33,7 @@ fun LanguageSelectScreen(navController: NavController) {
     Column(
         Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
+        verticalArrangement = Arrangement.Center
     ) {
 
         // Heading language selection text
@@ -39,6 +41,9 @@ fun LanguageSelectScreen(navController: NavController) {
             text = "Choose a\nLanguage to\nLearn",
             style = MaterialTheme.typography.displayMedium
         )
+
+        // Spacer between heading and buttons
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Spanish button
         OutlinedButton(
@@ -59,6 +64,9 @@ fun LanguageSelectScreen(navController: NavController) {
             )
         }
 
+        // Spacer between buttons
+        Spacer(modifier = Modifier.height(16.dp))
+
         // French button
         OutlinedButton(
             onClick = {
@@ -77,6 +85,9 @@ fun LanguageSelectScreen(navController: NavController) {
                 modifier = Modifier.padding(16.dp)
             )
         }
+
+        // Spacer between buttons
+        Spacer(modifier = Modifier.height(16.dp))
 
         // German button
         OutlinedButton(
@@ -97,6 +108,9 @@ fun LanguageSelectScreen(navController: NavController) {
             )
         }
 
+        // Spacer between buttons
+        Spacer(modifier = Modifier.height(16.dp))
+
         // Italian button
         OutlinedButton(
             onClick = {
@@ -115,12 +129,6 @@ fun LanguageSelectScreen(navController: NavController) {
                 modifier = Modifier.padding(16.dp)
             )
         }
-
-        val configuration = LocalConfiguration.current
-        // This adds a box to the bottom of the screen for some blank space based on screen height
-        Box(
-            modifier = Modifier
-                .heightIn(min = (configuration.screenHeightDp/8).dp) // Limit width
-        )
+        
     }
 }
