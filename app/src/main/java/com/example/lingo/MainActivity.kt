@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowCompat
 import com.example.compose.LingoTheme
 import com.example.lingo.navigation.AppNavigation
+import com.example.lingo.ui.startup.InitApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +17,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             LingoTheme {
-                AppNavigation()
+                InitApp {
+                    AppNavigation()
+                }
             }
         }
     }

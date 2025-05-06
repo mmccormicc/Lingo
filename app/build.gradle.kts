@@ -57,9 +57,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Fonts import
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.4")
 
+    // Coil Import
     implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+
+    // Encrypted shared preferences import
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
 
     // Jetpack Compose Integration
@@ -77,4 +82,18 @@ dependencies {
 
     // JSON serialization library, works with the Kotlin serialization plugin.
     implementation(libs.kotlinx.serialization.json)
+
+
+    // Network Imports
+
+    // Retrofit core library
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    // Retrofit coroutine support
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Gson converter for Retrofit
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // OkHttp logging interceptor for debugging
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }
