@@ -23,6 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
@@ -33,13 +35,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
+import com.example.lingo.domain.QuizViewModel
+import com.example.lingo.domain.QuizViewModelFactory
 import com.example.lingo.navigation.Routes
+import com.example.lingo.network.QuizRepository
+import com.example.lingo.network.RetrofitProvider
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QuizSelectScreen(navController: NavHostController, languageName: String) {
+
+    val repository = remember { QuizRepository(RetrofitProvider.quizApiService) }
+    val quizViewModel: QuizViewModel = viewModel(factory = QuizViewModelFactory(repository))
+
+
+    // Trigger score loading when Composable enters composition
+    LaunchedEffect(Unit) {
+        quizViewModel.getScore("0", "english", "noun quiz")
+    }
+
+    // Observe scoresMap as State
+    val scoresMap by quizViewModel.scoresMap.collectAsState()
+
+    // Extract the score for the current quizName
+    val score = scoresMap["noun quiz"]
 
     // Getting banner image depending on passed language name
     val imageResource = when (languageName.lowercase()) {
@@ -69,7 +91,17 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Choose flashcard category text
+        // Testing network
+        if (score != null) {
+            Text(text = "Score: $score", style = MaterialTheme.typography.displayMedium,
+                modifier = Modifier.padding(64.dp))
+        } else {
+            Text(text = "Loading score...", style = MaterialTheme.typography.displayMedium,
+                modifier = Modifier.padding(64.dp))
+        }
+
+
+        // Choose quiz text
         Text(
             text = "Choose\nQuiz",
             style = MaterialTheme.typography.displayMedium,
