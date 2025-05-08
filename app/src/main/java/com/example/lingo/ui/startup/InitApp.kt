@@ -3,12 +3,8 @@ package com.example.lingo.ui.startup
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lingo.data.QuizScore
-import com.example.lingo.domain.QuizViewModel
-import com.example.lingo.domain.QuizViewModelFactory
 import com.example.lingo.network.QuizRepository
 import com.example.lingo.network.RetrofitProvider
 import com.example.lingo.utils.DeviceIdManager
@@ -21,9 +17,9 @@ fun InitApp(
     // Getting current app context
     val context = LocalContext.current
 
-    // Getting or generating device ID on startup
     LaunchedEffect(Unit) {
-        val deviceId = DeviceIdManager.getOrCreateDeviceId(context)
+        // Getting or generating device ID on startup
+        DeviceIdManager.getOrCreateDeviceId(context)
 
         retryCachedScores(context)
     }
@@ -56,9 +52,9 @@ suspend fun retryCachedScores(context: Context) {
 
         try {
             // Sending score to server
-            val response = repository.submitScore(score)
+            val response = repository.submitScore(score, context)
             // If successfully sent, removing from cached scores
-            if (response.isSuccessful) {
+            if (response.isSuccess) {
                 iterator.remove()
             }
         // Catching generic exception

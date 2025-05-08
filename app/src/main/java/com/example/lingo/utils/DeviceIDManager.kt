@@ -23,9 +23,9 @@ object DeviceIdManager {
 
     private var cachedDeviceId: String? = null
 
-    suspend fun getOrCreateDeviceId(context: Context): String {
+    suspend fun getOrCreateDeviceId(context: Context) {
 
-        if (cachedDeviceId != null) return cachedDeviceId!!
+        if (cachedDeviceId != null) return
 
         Log.d("DeviceId", "Making a device id")
 
@@ -63,8 +63,6 @@ object DeviceIdManager {
             submitDeviceId("Fake ID 2")
             //submitDeviceId(cachedDeviceId!!)
         }
-
-        return cachedDeviceId!!
     }
 
     suspend fun submitDeviceId(deviceId: String) {
