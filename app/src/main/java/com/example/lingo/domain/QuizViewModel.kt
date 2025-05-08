@@ -245,7 +245,7 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
 
     // Holds number of questions on quiz
     var numQuestions: Int by mutableIntStateOf(0)
-    
+
 
     // Go to next question in quiz. Returns true if quiz is over.
     fun nextQuestion(answerIndex: Int): Boolean {
@@ -261,6 +261,7 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
         return true
     }
 
+    // Gets number of questions in quiz based on dropdown menu item info
     fun getNumQuestions(quizNumber: Int, languageName: String): Int {
         // Getting list of quizzes depending on selected language
         val quizzes = when (languageName.lowercase()) {
@@ -301,19 +302,23 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
 
     // Submit new quiz score to server
     fun submitScore(deviceId: String, language: String, quizName: String, context: Context) {
+        // Constructing score object to send over network
         val score = QuizScore(deviceId, language, quizName, correctAnswers)
-        Log.d("Score Info", score.toString())
+        // Sending score in coroutine
         viewModelScope.launch {
             repository.submitScore(score, context)
         }
     }
 
+    // Holds map of scores retrieved from server
     private val _scoresMap = MutableStateFlow<Map<String, Int>>(emptyMap())
     val scoresMap: StateFlow<Map<String, Int>> = _scoresMap
 
-    // Retrieve a quiz score based on deviceId, language, and quiz nae
+    // Retrieve a quiz score based on deviceId, language, and quiz name
     fun getScore(deviceId: String, language: String, quizName: String) {
+        // Retrieving score in coroutine
         viewModelScope.launch {
+            // Getting score by deviceId, language selected, and quiz name
             val result = repository.getScore(deviceId, language, quizName)
             if (result.isSuccess) {
                 // Updating map of scores with retrieved score
@@ -321,6 +326,7 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
                     _scoresMap.update { it + (quizName to score) }
                 }
             } else if (result.isFailure) {
+                // Logging error message
                 Log.e("QuizViewModel", "Failed to fetch score", result.exceptionOrNull())
             }
         }

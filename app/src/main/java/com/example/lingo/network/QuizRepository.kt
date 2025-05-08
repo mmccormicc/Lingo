@@ -3,22 +3,23 @@ package com.example.lingo.network
 import android.content.Context
 import android.util.Log
 import com.example.lingo.data.QuizScore
-import com.example.lingo.network.QuizApiService
 import com.google.gson.Gson
 import retrofit2.HttpException
-import retrofit2.Response
 import java.io.IOException
 
 class QuizRepository(private val apiService: QuizApiService) {
 
     suspend fun submitDeviceId(deviceId: String) {
         try {
+            // Calling submitDeviceId from api service
             val response = apiService.submitDeviceId(deviceId)
+            // Logging response
             if (response.isSuccessful) {
                 Log.d("QuizRepository", "Device ID submitted successfully")
             } else {
                 Log.e("QuizRepository", "Failed to submit device ID: ${response.code()} ${response.message()}")
             }
+        // Catching HTTP specific exceptions
         } catch (e: HttpException) {
             when (e.code()) {
                 400 -> Log.e("QuizRepository", "Bad Request: ${e.message()}")
@@ -27,8 +28,10 @@ class QuizRepository(private val apiService: QuizApiService) {
                 500 -> Log.e("QuizRepository", "Server Error")
                 else -> Log.e("QuizRepository", "HTTP error ${e.code()}: ${e.message()}")
             }
+        // Catching network exceptions
         } catch (e: IOException) {
             Log.e("QuizRepository", "Network error", e)
+        // Catching generic exceptions
         } catch (e: Exception) {
             Log.e("QuizRepository", "Unexpected error", e)
         }
@@ -36,15 +39,19 @@ class QuizRepository(private val apiService: QuizApiService) {
 
     suspend fun submitScore(score: QuizScore, context: Context): Result<Unit> {
         return try {
+            // Calling submitscore from api service
             val response = apiService.submitScore(score)
+            // Logging response
             if (response.isSuccessful) {
                 Log.d("QuizRepository", "Score submitted successfully")
-                Result.success(Unit) // Return success result
+                Result.success(Unit)
             } else {
                 Log.e("QuizRepository", "Server error: ${response.code()} ${response.message()}")
-                cacheUnsentScore(context, score) // Cache unsent score
-                Result.failure(Exception("Server error: ${response.message()}")) // Return failure result
+                // Caching score that failed to sent in sharedprefs object
+                cacheUnsentScore(context, score)
+                Result.failure(Exception("Server error: ${response.message()}"))
             }
+        // Catching HTTP specific exceptions
         } catch (e: HttpException) {
             when (e.code()) {
                 400 -> Log.e("QuizRepository", "Bad Request: ${e.message()}")
@@ -54,21 +61,25 @@ class QuizRepository(private val apiService: QuizApiService) {
                 else -> Log.e("QuizRepository", "HTTP error ${e.code()}: ${e.message()}")
             }
             cacheUnsentScore(context, score)
-            Result.failure(e) // Return failure result with the exception
+            Result.failure(e)
+        // Catching network exceptions
         } catch (e: IOException) {
             Log.e("QuizRepository", "Network error", e)
             cacheUnsentScore(context, score)
-            Result.failure(e) // Return failure result with the exception
+            Result.failure(e)
+        // Catching generic exceptions
         } catch (e: Exception) {
             Log.e("QuizRepository", "Unexpected error", e)
             cacheUnsentScore(context, score)
-            Result.failure(e) // Return failure result with the exception
+            Result.failure(e)
         }
     }
 
     suspend fun getScore(deviceId: String, language: String, quizName: String): Result<Int?> {
         return try {
+            // Calling getScore from api service
             val response = apiService.getScore(deviceId, language, quizName)
+            // Logging response
             if (response.isSuccessful) {
                 val score = response.body()?.score
                 Result.success(score)
@@ -76,6 +87,7 @@ class QuizRepository(private val apiService: QuizApiService) {
                 Log.e("QuizRepository", "Server error: ${response.code()} ${response.message()}")
                 Result.failure(Exception("Server error: ${response.code()} ${response.message()}"))
             }
+        // Catching HTTP specific exceptions
         } catch (e: HttpException) {
             when (e.code()) {
                 400 -> Log.e("QuizRepository", "Bad Request: ${e.message()}")
@@ -85,9 +97,11 @@ class QuizRepository(private val apiService: QuizApiService) {
                 else -> Log.e("QuizRepository", "HTTP error ${e.code()}: ${e.message()}")
             }
             Result.failure(e)
+        // Catching network exceptions
         } catch (e: IOException) {
             Log.e("QuizRepository", "Network error", e)
             Result.failure(e)
+        // Catching generic exceptions
         } catch (e: Exception) {
             Log.e("QuizRepository", "Unexpected error", e)
             Result.failure(e)
