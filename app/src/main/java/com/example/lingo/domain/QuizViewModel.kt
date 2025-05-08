@@ -240,16 +240,12 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
     // Holds number of answers gotten as correct
     var correctAnswers: Int by mutableIntStateOf(0)
 
-    // Holds current quiz
+    // Holds current quiz being viewed
     var quiz: Quiz by mutableStateOf(Quiz(listOf()))
 
     // Holds number of questions on quiz
     var numQuestions: Int by mutableIntStateOf(0)
-
-    fun resetViewModel() {
-        questionNumber = 0
-        correctAnswers = 0
-    }
+    
 
     // Go to next question in quiz. Returns true if quiz is over.
     fun nextQuestion(answerIndex: Int): Boolean {

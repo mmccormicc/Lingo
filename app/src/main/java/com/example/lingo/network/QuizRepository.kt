@@ -11,37 +11,56 @@ import java.io.IOException
 
 class QuizRepository(private val apiService: QuizApiService) {
 
-    suspend fun submitDeviceId(deviceId: String): Response<Map<String, Boolean>> {
-        return apiService.submitDeviceId(deviceId)
+    suspend fun submitDeviceId(deviceId: String) {
+        try {
+            val response = apiService.submitDeviceId(deviceId)
+            if (response.isSuccessful) {
+                Log.d("QuizRepository", "Device ID submitted successfully")
+            } else {
+                Log.e("QuizRepository", "Failed to submit device ID: ${response.code()} ${response.message()}")
+            }
+        } catch (e: HttpException) {
+            when (e.code()) {
+                400 -> Log.e("QuizRepository", "Bad Request: ${e.message()}")
+                401 -> Log.e("QuizRepository", "Unauthorized")
+                404 -> Log.e("QuizRepository", "Not Found")
+                500 -> Log.e("QuizRepository", "Server Error")
+                else -> Log.e("QuizRepository", "HTTP error ${e.code()}: ${e.message()}")
+            }
+        } catch (e: IOException) {
+            Log.e("QuizRepository", "Network error", e)
+        } catch (e: Exception) {
+            Log.e("QuizRepository", "Unexpected error", e)
+        }
     }
 
     suspend fun submitScore(score: QuizScore, context: Context): Result<Unit> {
         return try {
             val response = apiService.submitScore(score)
             if (response.isSuccessful) {
-                Log.d("QuizViewModel", "Score submitted successfully")
+                Log.d("QuizRepository", "Score submitted successfully")
                 Result.success(Unit) // Return success result
             } else {
-                Log.e("QuizViewModel", "Server error: ${response.code()} ${response.message()}")
+                Log.e("QuizRepository", "Server error: ${response.code()} ${response.message()}")
                 cacheUnsentScore(context, score) // Cache unsent score
                 Result.failure(Exception("Server error: ${response.message()}")) // Return failure result
             }
         } catch (e: HttpException) {
             when (e.code()) {
-                400 -> Log.e("QuizViewModel", "Bad Request: ${e.message()}")
-                401 -> Log.e("QuizViewModel", "Unauthorized")
-                404 -> Log.e("QuizViewModel", "Not Found")
-                500 -> Log.e("QuizViewModel", "Server Error")
-                else -> Log.e("QuizViewModel", "HTTP error ${e.code()}: ${e.message()}")
+                400 -> Log.e("QuizRepository", "Bad Request: ${e.message()}")
+                401 -> Log.e("QuizRepository", "Unauthorized")
+                404 -> Log.e("QuizRepository", "Not Found")
+                500 -> Log.e("QuizRepository", "Server Error")
+                else -> Log.e("QuizRepository", "HTTP error ${e.code()}: ${e.message()}")
             }
             cacheUnsentScore(context, score)
             Result.failure(e) // Return failure result with the exception
         } catch (e: IOException) {
-            Log.e("QuizViewModel", "Network error", e)
+            Log.e("QuizRepository", "Network error", e)
             cacheUnsentScore(context, score)
             Result.failure(e) // Return failure result with the exception
         } catch (e: Exception) {
-            Log.e("QuizViewModel", "Unexpected error", e)
+            Log.e("QuizRepository", "Unexpected error", e)
             cacheUnsentScore(context, score)
             Result.failure(e) // Return failure result with the exception
         }
@@ -54,23 +73,23 @@ class QuizRepository(private val apiService: QuizApiService) {
                 val score = response.body()?.score
                 Result.success(score)
             } else {
-                Log.e("QuizViewModel", "Server error: ${response.code()} ${response.message()}")
+                Log.e("QuizRepository", "Server error: ${response.code()} ${response.message()}")
                 Result.failure(Exception("Server error: ${response.code()} ${response.message()}"))
             }
         } catch (e: HttpException) {
             when (e.code()) {
-                400 -> Log.e("QuizViewModel", "Bad Request: ${e.message()}")
-                401 -> Log.e("QuizViewModel", "Unauthorized")
-                404 -> Log.e("QuizViewModel", "Not Found")
-                500 -> Log.e("QuizViewModel", "Server Error")
-                else -> Log.e("QuizViewModel", "HTTP error ${e.code()}: ${e.message()}")
+                400 -> Log.e("QuizRepository", "Bad Request: ${e.message()}")
+                401 -> Log.e("QuizRepository", "Unauthorized")
+                404 -> Log.e("QuizRepository", "Not Found")
+                500 -> Log.e("QuizRepository", "Server Error")
+                else -> Log.e("QuizRepository", "HTTP error ${e.code()}: ${e.message()}")
             }
             Result.failure(e)
         } catch (e: IOException) {
-            Log.e("QuizViewModel", "Network error", e)
+            Log.e("QuizRepository", "Network error", e)
             Result.failure(e)
         } catch (e: Exception) {
-            Log.e("QuizViewModel", "Unexpected error", e)
+            Log.e("QuizRepository", "Unexpected error", e)
             Result.failure(e)
         }
     }

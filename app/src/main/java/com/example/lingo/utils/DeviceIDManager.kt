@@ -52,42 +52,11 @@ object DeviceIdManager {
             // Adding device id to secure prefs
             securePrefs.edit().putString(DEVICE_ID_KEY, newId).apply()
             // Sending Id to remote server
-            submitDeviceId(newId)
+            repository.submitDeviceId(newId)
         }
 
         Log.d("DeviceIDManager", "Current ID: $cachedDeviceId")
 
-        // If device id was already created
-        if (cachedDeviceId != null){
-            // Testing submitting device id
-            submitDeviceId("Fake ID 2")
-            //submitDeviceId(cachedDeviceId!!)
-        }
-    }
-
-    suspend fun submitDeviceId(deviceId: String) {
-        try {
-            // Call repository to submit the deviceId
-            val response = repository.submitDeviceId(deviceId)
-            if (response.isSuccessful) {
-                Log.d("DeviceId", "Device ID submitted successfully")
-            } else {
-                Log.e("DeviceId", "Failed to submit device ID: ${response.code()}")
-            }
-            // Catching HttpExceptions and printing error messages
-        } catch (e: HttpException) {
-            when (e.code()) {
-                400 -> Log.e("DeviceIDManager", "Bad Request: ${e.message()}")
-                401 -> Log.e("DeviceIDManager", "Unauthorized")
-                404 -> Log.e("DeviceIDManager", "Not Found")
-                500 -> Log.e("DeviceIDManagerl", "Server Error")
-                else -> Log.e("DeviceIDManager", "HTTP error ${e.code()}: ${e.message()}")
-            }
-        } catch (e: IOException) {
-            Log.e("DeviceIDManager", "Network error", e)
-        } catch (e: Exception) {
-            Log.e("DeviceIDManager", "Unexpected error", e)
-        }
     }
 
     fun getCachedDeviceId(): String? {
