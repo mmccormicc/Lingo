@@ -2,6 +2,7 @@ package com.example.lingo.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +45,7 @@ import com.example.lingo.domain.QuizViewModelFactory
 import com.example.lingo.navigation.Routes
 import com.example.lingo.network.QuizRepository
 import com.example.lingo.network.RetrofitProvider
+import com.example.lingo.utils.DeviceIdManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,17 +54,8 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
     val repository = remember { QuizRepository(RetrofitProvider.quizApiService) }
     val quizViewModel: QuizViewModel = viewModel(factory = QuizViewModelFactory(repository))
 
-
-    // Trigger score loading when Composable enters composition
-    LaunchedEffect(Unit) {
-        quizViewModel.getScore("0", "english", "noun quiz")
-    }
-
     // Observe scoresMap as State
     val scoresMap by quizViewModel.scoresMap.collectAsState()
-
-    // Extract the score for the current quizName
-    val score = scoresMap["noun quiz"]
 
     // Getting banner image depending on passed language name
     val imageResource = when (languageName.lowercase()) {
@@ -79,6 +73,18 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
     // Option selected in dropdown menu
     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
+
+    LaunchedEffect(Unit) {
+        // If device id is found
+        DeviceIdManager.getCachedDeviceId()?.let { deviceId ->
+            // For each quiz name
+            options.forEach { quizName ->
+                // Retrieve score from server
+                quizViewModel.getScore(deviceId, languageName, quizName)
+            }
+        }
+    }
+
     Column(
         Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,15 +96,6 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
             contentDescription = languageName + "Banner",
             modifier = Modifier.fillMaxWidth()
         )
-
-        // Testing network
-        if (score != null) {
-            Text(text = "Score: $score", style = MaterialTheme.typography.displayMedium,
-                modifier = Modifier.padding(64.dp))
-        } else {
-            Text(text = "Loading score...", style = MaterialTheme.typography.displayMedium,
-                modifier = Modifier.padding(64.dp))
-        }
 
 
         // Choose quiz text
@@ -127,21 +124,37 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                options.forEachIndexed { index, selectionOption ->
+                // For each drop down menu item
+                options.forEachIndexed { index, quizName ->
+                    // Getting best score associated with quiz name
+                    val bestScore = scoresMap[quizName]
+                    // Getting number of questions in quiz
+                    val numQuestions = quizViewModel.getNumQuestions(index, languageName)
+
+                    // Each drop down menu item
                     DropdownMenuItem(
-                        text = {Text(text = selectionOption, style = TextStyle(
-                            fontSize = 24.sp))},
+                        text = {
+                            // Row that will put max space between name and score
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                // Quiz name text
+                                Text(text = quizName, style = TextStyle(fontSize = 24.sp))
+                                // Best score on quiz
+                                bestScore?.let {
+                                    Text(text = "Highest: $it/$numQuestions", style = TextStyle(fontSize = 20.sp, color = Color.Blue))
+                                } ?: Text(text = "Not Taken", style = TextStyle(fontSize = 20.sp, color = Color.Blue))
+                            }
+                        },
                         onClick = {
                             // Updating text on drop down menu
-                            selectedOptionText = selectionOption
+                            selectedOptionText = quizName
                             // Minimizing menu
                             expanded = false
 
-                            // Need to capture value of quiz index within onClick method
-                            val correctQuizIndex = index
-
                             // Navigating to quiz from selected option
-                            navController.navigate(Routes.quizScreen + "/$languageName/$correctQuizIndex/$selectionOption")
+                            navController.navigate(Routes.quizScreen + "/$languageName/$index/$quizName")
                         }
                     )
                 }

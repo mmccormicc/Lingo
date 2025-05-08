@@ -9,8 +9,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface QuizApiService {
-    @POST("scores")
-    suspend fun submitScore(@Body score: QuizScore): Response<QuizScore>
+    @POST("deviceid")
+    suspend fun submitDeviceId(@Body deviceId: String): Response<Map<String, Boolean>>
+
+    @POST("score")
+    suspend fun submitScore(@Body score: QuizScore): Response<Map<String, Boolean>>
 
     @GET("score")
     suspend fun getScore(

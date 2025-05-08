@@ -6,7 +6,11 @@ import retrofit2.Response
 
 class QuizRepository(private val apiService: QuizApiService) {
 
-    suspend fun submitScore(score: QuizScore): Response<QuizScore> {
+    suspend fun submitDeviceId(deviceId: String): Response<Map<String, Boolean>> {
+        return apiService.submitDeviceId(deviceId)
+    }
+
+    suspend fun submitScore(score: QuizScore): Response<Map<String, Boolean>> {
         return apiService.submitScore(score)
     }
 

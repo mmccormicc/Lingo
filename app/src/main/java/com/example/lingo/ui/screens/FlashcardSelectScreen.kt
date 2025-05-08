@@ -104,11 +104,8 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
                             // Minimizing menu
                             expanded = false
 
-                            // Need to capture value of quiz index within onClick method
-                            val correctFlashcardIndex = index
-
                             // Navigating to quiz from selected option
-                            navController.navigate(Routes.flashcardScreen + "/$languageName/$correctFlashcardIndex")
+                            navController.navigate(Routes.flashcardScreen + "/$languageName/$index")
                         }
                     )
                 }

@@ -1,5 +1,6 @@
 package com.example.lingo.domain
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -12,6 +13,7 @@ import com.example.lingo.data.Quiz
 import com.example.lingo.data.QuizQuestion
 import com.example.lingo.data.QuizScore
 import com.example.lingo.network.QuizRepository
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -125,6 +127,23 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
         return true
     }
 
+    fun getNumQuestions(quizNumber: Int, languageName: String): Int {
+        // Getting list of quizzes depending on selected language
+        val quizzes = when (languageName.lowercase()) {
+            "{spanish}" -> spanishQuizzes
+            "{french}" -> frenchQuizzes
+            "{german}" -> germanQuizzes
+            "{italian}" -> italianQuizzes
+            else -> spanishQuizzes
+        } as List<Quiz>
+
+        // Getting quiz
+        quiz = quizzes[quizNumber]
+
+        // Returning number of questions in quiz
+        return quiz.questions.size
+    }
+
     // Set current quiz to be displayed
     fun setQuiz(quizNumber: Int, languageName: String) {
         // Getting list of quizzes depending on selected language
@@ -147,8 +166,9 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
     }
 
     // Submit new quiz score to server
-    fun submitScore(deviceId: String, language: String, quizName: String) {
+    fun submitScore(deviceId: String, language: String, quizName: String, context: Context) {
         val score = QuizScore(deviceId, language, quizName, correctAnswers)
+        Log.d("Score Info", score.toString())
         // Launching coroutine
         viewModelScope.launch {
             try {
@@ -158,6 +178,7 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
                     Log.d("QuizViewModel", "Score submitted successfully")
                 } else {
                     Log.e("QuizViewModel", "Server error: ${response.code()} ${response.message()}")
+                    cacheUnsentScore(context, score)
                 }
             } catch (e: HttpException) {
                 when (e.code()) {
@@ -167,13 +188,36 @@ class QuizViewModel(private val repository: QuizRepository) : ViewModel() {
                     500 -> Log.e("QuizViewModel", "Server Error")
                     else -> Log.e("QuizViewModel", "HTTP error ${e.code()}: ${e.message()}")
                 }
+                cacheUnsentScore(context, score)
             } catch (e: IOException) {
                 Log.e("QuizViewModel", "Network error", e)
+                cacheUnsentScore(context, score)
             } catch (e: Exception) {
                 Log.e("QuizViewModel", "Unexpected error", e)
+                cacheUnsentScore(context, score)
             }
         }
     }
+
+    private fun cacheUnsentScore(context: Context, score: QuizScore) {
+        // Getting or creating shared preferences object
+        val prefs = context.getSharedPreferences("unsent_scores", Context.MODE_PRIVATE)
+        // Gson object
+        val gson = Gson()
+        // Current list of pending scores
+        val current = prefs.getString("pending", null)
+
+        // If there are pending scores, get the list of them. Otherwise create a new list.
+        val list = if (current != null) {
+            gson.fromJson(current, Array<QuizScore>::class.java).toMutableList()
+        } else mutableListOf()
+
+        // Add score to list of pending scores
+        list.add(score)
+        // Put pending list into sharedprefs object
+        prefs.edit().putString("pending", gson.toJson(list)).apply()
+    }
+
 
     private val _scoresMap = MutableStateFlow<Map<String, Int>>(emptyMap())
     val scoresMap: StateFlow<Map<String, Int>> = _scoresMap

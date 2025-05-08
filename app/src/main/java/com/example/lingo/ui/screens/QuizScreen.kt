@@ -1,5 +1,6 @@
 package com.example.lingo.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -108,8 +109,20 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
                         val numQuestions = quizViewModel.numQuestions
                         val correctAnswers = quizViewModel.correctAnswers
 
-                        quizViewModel.submitScore(DeviceIdManager.getOrCreateDeviceId(context), languageName, quizName)
+                        // Getting device id
+                        val deviceId = DeviceIdManager.getCachedDeviceId()
+                        // If device id was found
+                        if (deviceId != null) {
+                            // Submitting score to remote server
+                            quizViewModel.submitScore(
+                                deviceId,
+                                languageName,
+                                quizName,
+                                context
+                            )
+                        }
 
+                        // Navigating to result screen
                         navController.navigate(Routes.quizResultScreen + "/$languageName/$quizName/$numQuestions/$correctAnswers")
                     }
                 }
