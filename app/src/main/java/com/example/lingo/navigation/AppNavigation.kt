@@ -16,6 +16,8 @@ import com.example.lingo.ui.screens.QuizResultScreen
 import com.example.lingo.ui.screens.QuizScreen
 import com.example.lingo.ui.screens.QuizSelectScreen
 
+
+// This handles navigating between screens and passing arguments to screens
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
@@ -47,7 +49,7 @@ fun AppNavigation() {
             var languageName = it.arguments?.getString("languagename")
             var quizNumber = it.arguments?.getInt("quiznumber")
             var quizName = it.arguments?.getString("quizname")
-                // Calling quiz screen composable with arguments
+            // Calling quiz screen composable with arguments
             QuizScreen(navController, languageName ?: "No language", quizNumber ?: -1, quizName ?: "No Quiz")
         }
         composable(

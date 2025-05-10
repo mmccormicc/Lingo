@@ -14,6 +14,8 @@ import kotlin.random.Random
 
 class MissingWordsViewModel(): ViewModel(), BaseQuestionsViewModel {
 
+    // Missing words questions
+
     var spanishQuestions: MutableList<QuizQuestion> = mutableListOf(
             QuizQuestion("Él (corrió/corre) en el parque ayer.", 0, listOf("corrió", "corre")),
             QuizQuestion("Ellos (viven/vivirán) en Madrid el próximo año.", 1, listOf("viven", "vivirán")),
@@ -48,7 +50,7 @@ class MissingWordsViewModel(): ViewModel(), BaseQuestionsViewModel {
     // Holds list of questions that have been displayed this rotation
     var seenQuestions: MutableList<QuizQuestion> = mutableListOf()
 
-    // Holds if picture match has been initialized
+    // Holds if missing words has been initialized
     var initialized: Boolean by mutableStateOf(false)
 
     // Holds current question. Starts as error question before random question is generated.
@@ -90,7 +92,7 @@ class MissingWordsViewModel(): ViewModel(), BaseQuestionsViewModel {
         print(seenQuestions)
     }
 
-    // Set picture questions to be displayed
+    // Set missing words questions to be displayed
     fun setQuestions(languageName: String) {
         // Getting list of questions depending on selected language
         unseenQuestions = when (languageName.lowercase()) {

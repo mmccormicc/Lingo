@@ -46,11 +46,11 @@ fun FlashcardScreen(navController : NavController, languageName: String, flashca
         else -> R.drawable.germany_banner // Image to show if the name doesn't match
     }
 
-    // Initializing picture match
+    // Initializing flash card view model
     if (!flashcardViewModel.initialized) {
-        // Setting list of questions based on language
+        // Setting list of cards based on language
         flashcardViewModel.setFlashcards(flashcardNumber, languageName)
-        // Getting random question to start
+        // Getting random card to start
         flashcardViewModel.nextCard()
         // Was initialized
         flashcardViewModel.initialized = true
@@ -68,6 +68,7 @@ fun FlashcardScreen(navController : NavController, languageName: String, flashca
             modifier = Modifier.fillMaxWidth()
         )
 
+        // Displaying custom flashcard component
         FlashcardComponent(flashcardViewModel)
 
 

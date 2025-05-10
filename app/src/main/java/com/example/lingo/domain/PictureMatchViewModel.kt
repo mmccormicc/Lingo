@@ -12,6 +12,8 @@ import kotlin.random.Random
 
 class PictureMatchViewModel(): ViewModel(), BaseQuestionsViewModel {
 
+    // Picture match questions
+
     var spanishQuestions: List<PictureMatchQuestion> = mutableListOf(
             PictureMatchQuestion(R.drawable.man, 0, listOf("Hombre", "Hombro", "Mujer", "Hambre")),
             PictureMatchQuestion(R.drawable.woman, 2, listOf("Nino", "Hombre", "Mujer", "Perro")),
@@ -82,7 +84,7 @@ class PictureMatchViewModel(): ViewModel(), BaseQuestionsViewModel {
             seenQuestions.clear()
             // Adding current question to seen questions
             seenQuestions.add(currentQuestion)
-            // Updating curent question index
+            // Updating current question index
             currentQuestionIndex++
         }
 

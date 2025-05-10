@@ -41,6 +41,7 @@ import com.example.lingo.navigation.Routes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FlashCardSelectScreen(navController: NavHostController, languageName: String) {
+
     // Getting banner image depending on passed language name
     val imageResource = when (languageName.lowercase()) {
         "{spanish}" -> R.drawable.mexico_banner
@@ -50,8 +51,11 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
         else -> R.drawable.germany_banner // Image to show if the name doesn't match
     }
 
+    // Flashcard collection options
     val options = listOf("Noun Flashcards", "Verb Flashcards")
+    // Holds if menu is expanded or not
     var expanded by remember { mutableStateOf(false) }
+    // Holds selected drop down menu option tex to display
     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
     Column(
@@ -65,7 +69,6 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
             contentDescription = languageName + "Banner",
             modifier = Modifier.fillMaxWidth()
         )
-
 
 
         // Choose flashcard category text
@@ -104,7 +107,7 @@ fun FlashCardSelectScreen(navController: NavHostController, languageName: String
                             // Minimizing menu
                             expanded = false
 
-                            // Navigating to quiz from selected option
+                            // Navigating to flashcard screen with correct collection from selected option
                             navController.navigate(Routes.flashcardScreen + "/$languageName/$index")
                         }
                     )

@@ -13,6 +13,8 @@ import kotlin.random.Random
 
 class FlashcardViewModel(): ViewModel() {
 
+    // Collections of flashcards grouped by category
+
     var spanishNounCards: FlashcardCollection = FlashcardCollection(mutableListOf(
         Flashcard("Man", "Hombre"),
         Flashcard("Woman", "Mujer"),
@@ -81,61 +83,60 @@ class FlashcardViewModel(): ViewModel() {
     var italianCards: List<FlashcardCollection> = listOf(italianNounCards, italianVerbCards)
 
 
-    // Holds current quiz
+    // Holds current flashcard collection
     var currentLanguageFlashcards: FlashcardCollection by mutableStateOf(FlashcardCollection(mutableListOf()))
 
-    // Holds list of questions not displayed in this rotation
+    // Holds list of cards not displayed in this rotation
     var unseenCards: MutableList<Flashcard> = mutableListOf()
 
-    // Holds list of questions that have been displayed this rotation
+    // Holds list of cards that have been displayed this rotation
     var seenCards: MutableList<Flashcard> = mutableListOf()
 
     // Holds if picture match has been initialized
     var initialized: Boolean by mutableStateOf(false)
 
-    // Holds current question. Starts as error question before random question is generated.
+    // Holds current card. Starts as error card before random card is generated.
     var currentCard: Flashcard by mutableStateOf(Flashcard("Error", "Error"))
 
-    // Holds number of questions displayed, used to identify questions within composable
+    // Holds number of cards displayed, used to identify cards within composable
     var currentCardIndex: Int by mutableIntStateOf(0)
 
     fun nextCard() {
-        println("NEXT CARD")
-        // Questions remaining
+        // cards remaining
         if (unseenCards.size > 1) {
-            println("Has next question")
-            // Get random index in range of unseen question list size
+            println("Has next card")
+            // Get random index in range of unseen card list size
             var nextCardIndex = Random.nextInt(0, unseenCards.size)
 
             val nextCard = unseenCards.get(nextCardIndex)
-            // Set current question from index
+            // Set current card from index
             currentCard = Flashcard(nextCard.englishSide, nextCard.translatedSide)
-            // Adding to seen questions
+            // Adding to seen cards
             seenCards.add(currentCard)
-            // Removing from unseen questions
+            // Removing from unseen cards
             unseenCards.removeAt(nextCardIndex)
-            // Updating current question index
+            // Updating current card index
             currentCardIndex++
-        // All questions removed
+        // All cards removed
         } else {
-            // Set to only question left
+            // Set to only card left
             currentCard = unseenCards.get(0)
-            // Removing last question
+            // Removing last card
             unseenCards.removeAt(0)
-            // Adding all questions back to unseen questions by creating copy of seen questions
+            // Adding all cards back to unseen cards by creating copy of seen cards
             unseenCards = seenCards.toMutableList()
-            // Clearing seen questions
+            // Clearing seen cards
             seenCards.clear()
-            // Adding current question to seen questions
+            // Adding current card to seen cards
             seenCards.add(currentCard)
-            // Updating curent question index
+            // Updating current card index
             currentCardIndex++
         }
     }
 
-    // Set current quiz to be displayed
+    // Set current flashcard collection to be displayed
     fun setFlashcards(flashcardNumber: Int, languageName: String) {
-        // Getting list of quizzes depending on selected language
+        // Getting list of flashcard collections depending on selected language
         val languageFlashcards = when (languageName.lowercase()) {
             "{spanish}" -> spanishCards
             "{french}" -> frenchCards
@@ -144,8 +145,10 @@ class FlashcardViewModel(): ViewModel() {
             else -> spanishCards
         } as List<FlashcardCollection>
 
+        // Getting list of flashcards based on selected flashcard category
         currentLanguageFlashcards = languageFlashcards[flashcardNumber]
 
+        // Setting unseenCards to initially include all cards
         unseenCards = currentLanguageFlashcards.flashcards
 
 
