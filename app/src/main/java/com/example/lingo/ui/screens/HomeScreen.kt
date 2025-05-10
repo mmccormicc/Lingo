@@ -42,6 +42,7 @@ fun HomeScreen(navController : NavController, languageName: String) {
     Column(
         Modifier
             .fillMaxSize()
+            // This prevents app from overlapping system bar with time and battery life symbols
             .windowInsetsPadding(WindowInsets.systemBars),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -55,6 +56,7 @@ fun HomeScreen(navController : NavController, languageName: String) {
 
         Column(
             Modifier.fillMaxSize(),
+            // Centering blocks horizontally and spacing them evenly on screen
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
 
@@ -62,8 +64,7 @@ fun HomeScreen(navController : NavController, languageName: String) {
 
             // Practice column
             Column(
-                //Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // Practice text
                 Text(
@@ -76,7 +77,8 @@ fun HomeScreen(navController : NavController, languageName: String) {
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .background(Color.LightGray),
+                        // Surrounding practice buttons with gray background
+                        .background(MaterialTheme.colorScheme.outlineVariant),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     // Flashcards button
@@ -144,7 +146,7 @@ fun HomeScreen(navController : NavController, languageName: String) {
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .background(Color.LightGray),
+                        .background(MaterialTheme.colorScheme.outlineVariant),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     // Quizzes button

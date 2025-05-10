@@ -54,15 +54,17 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
         pictureMatchViewModel.initialized = true
     }
 
+    // Selecting image size depending on screen height
     val configuration = LocalConfiguration.current
-
     val imageSize = when {
         configuration.screenHeightDp < 800 -> 200.dp   // Small screens
         else -> 300.dp                  // Medium / Large screens
     }
 
     Column(
-        Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars),
+        Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 

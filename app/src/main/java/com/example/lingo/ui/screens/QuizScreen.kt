@@ -39,8 +39,9 @@ import com.example.lingo.utils.DeviceIdManager
 @Composable
 fun QuizScreen(navController : NavController, languageName: String, quizNumber: Int, quizName: String) {
 
-
+    // Creating repository
     val repository = remember { QuizRepository(RetrofitProvider.quizApiService) }
+    // Creating QuizViewModel with access to repository
     val quizViewModel: QuizViewModel = viewModel(factory = QuizViewModelFactory(repository))
 
     val context = LocalContext.current
@@ -58,7 +59,9 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
     quizViewModel.setQuiz(quizNumber, languageName)
 
     Column(
-        Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars),
+        Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
 
@@ -85,7 +88,9 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
             modifier = Modifier.padding(bottom = 32.dp)
         )
 
+        // Current question
         val quizQuestion = quizViewModel.getQuestion().question
+        // Current options to display
         val answerOptions = quizViewModel.getQuestion().options
 
         // Current quiz question text
@@ -103,14 +108,17 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
             Button(
                 modifier = Modifier.padding(4.dp).fillMaxWidth(),
                 onClick = {
-                    println(quizViewModel.numQuestions)
+
                     // Getting next quiz question, and if end of quiz is reached change to result screen
                     if(quizViewModel.nextQuestion(index)) {
+                        // Getting number of questions in quiz
                         val numQuestions = quizViewModel.numQuestions
+                        // Getting number of correct answers achieved
                         val correctAnswers = quizViewModel.correctAnswers
 
                         // Getting device id
                         val deviceId = DeviceIdManager.getCachedDeviceId()
+
                         // If device id was found
                         if (deviceId != null) {
                             // Submitting score to remote server
@@ -127,6 +135,7 @@ fun QuizScreen(navController : NavController, languageName: String, quizNumber: 
                     }
                 }
             ) {
+                // Answer option text
                 Text(
                     text = option,
                     style = MaterialTheme.typography.displaySmall.copy(

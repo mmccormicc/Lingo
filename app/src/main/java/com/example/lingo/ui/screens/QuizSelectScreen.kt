@@ -73,13 +73,13 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
     // Option selected in dropdown menu
     var selectedOptionText by remember { mutableStateOf(options[0]) }
 
-
+    // Launching coroutine
     LaunchedEffect(Unit) {
         // If device id is found
         DeviceIdManager.getCachedDeviceId()?.let { deviceId ->
             // For each quiz name
             options.forEach { quizName ->
-                // Retrieve score from server
+                // Retrieve score from server for each quiz
                 quizViewModel.getScore(deviceId, languageName, quizName)
             }
         }
@@ -126,6 +126,7 @@ fun QuizSelectScreen(navController: NavHostController, languageName: String) {
             ) {
                 // For each drop down menu item
                 options.forEachIndexed { index, quizName ->
+
                     // Getting best score associated with quiz name
                     val bestScore = scoresMap[quizName]
                     // Getting number of questions in quiz

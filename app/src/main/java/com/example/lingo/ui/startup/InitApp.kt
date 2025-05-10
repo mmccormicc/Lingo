@@ -17,18 +17,21 @@ fun InitApp(
     // Getting current app context
     val context = LocalContext.current
 
+    // Launching coroutine
     LaunchedEffect(Unit) {
         // Getting or generating device ID on startup
         DeviceIdManager.getOrCreateDeviceId(context)
-
+        // Try submitting cached scores to server
         retryCachedScores(context)
     }
 
+    // Rest of app
     content()
 }
 
 suspend fun retryCachedScores(context: Context) {
 
+    // Creating repository
     val repository = QuizRepository(RetrofitProvider.quizApiService)
 
     // Getting unsent scored scores shared prefs

@@ -43,7 +43,7 @@ fun MissingWordsScreen(navController : NavController, languageName: String) {
         else -> R.drawable.germany_banner // Image to show if the name doesn't match
     }
 
-    // Initializing picture match
+    // Initializing missing words
     if (!missingWordsViewModel.initialized) {
         // Setting list of questions based on language
         missingWordsViewModel.setQuestions(languageName)
