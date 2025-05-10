@@ -96,12 +96,12 @@ class MissingWordsViewModel(): ViewModel(), BaseQuestionsViewModel {
     fun setQuestions(languageName: String) {
         // Getting list of questions depending on selected language
         unseenQuestions = when (languageName.lowercase()) {
-            "{spanish}" -> spanishQuestions
-            "{french}" -> frenchQuestions
-            "{german}" -> germanQuestions
-            "{italian}" -> italianQuestions
-            else -> spanishQuestions
-        } as MutableList<QuizQuestion>
+            "{spanish}" -> spanishQuestions.toMutableList()
+            "{french}" -> frenchQuestions.toMutableList()
+            "{german}" -> germanQuestions.toMutableList()
+            "{italian}" -> italianQuestions.toMutableList()
+            else -> spanishQuestions.toMutableList()
+        }
     }
 
 

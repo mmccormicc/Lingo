@@ -59,7 +59,7 @@ class PictureMatchViewModel(): ViewModel(), BaseQuestionsViewModel {
 
 
     override fun nextQuestion() {
-        // Questions remaining
+        // More than one question remaining
         if (unseenQuestions.size > 1) {
             println("Has next question")
             // Get random index in range of unseen question list size
@@ -72,7 +72,7 @@ class PictureMatchViewModel(): ViewModel(), BaseQuestionsViewModel {
             unseenQuestions.removeAt(nextQuestionIndex)
             // Updating current question index
             currentQuestionIndex++
-        // All questions removed
+        // Only one question left
         } else {
             // Set to only question left
             currentQuestion = unseenQuestions.get(0)
@@ -95,12 +95,12 @@ class PictureMatchViewModel(): ViewModel(), BaseQuestionsViewModel {
     fun setQuestions(languageName: String) {
         // Getting list of questions depending on selected language
         unseenQuestions = when (languageName.lowercase()) {
-            "{spanish}" -> spanishQuestions
-            "{french}" -> frenchQuestions
-            "{german}" -> germanQuestions
-            "{italian}" -> italianQuestions
-            else -> spanishQuestions
-        } as MutableList<PictureMatchQuestion>
+            "{spanish}" -> spanishQuestions.toMutableList()
+            "{french}" -> frenchQuestions.toMutableList()
+            "{german}" -> germanQuestions.toMutableList()
+            "{italian}" -> italianQuestions.toMutableList()
+            else -> spanishQuestions.toMutableList()
+        }
     }
 
 

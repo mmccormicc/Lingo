@@ -143,13 +143,13 @@ class FlashcardViewModel(): ViewModel() {
             "{german}" -> germanCards
             "{italian}" -> italianCards
             else -> spanishCards
-        } as List<FlashcardCollection>
+        }
 
         // Getting list of flashcards based on selected flashcard category
         currentLanguageFlashcards = languageFlashcards[flashcardNumber]
 
         // Setting unseenCards to initially include all cards
-        unseenCards = currentLanguageFlashcards.flashcards
+        unseenCards = currentLanguageFlashcards.flashcards.toMutableList()
 
 
     }
