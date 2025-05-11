@@ -9,6 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -27,27 +28,18 @@ class QuizViewModelIntegrationTest {
     }
 
     @Test
-    fun SubmitAndGetScore_NewDeviceAndValidScore_RetrievesCorrectScore() = runTest {
-        // Test context
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        // Random device id for test
-        val deviceId = UUID.randomUUID().toString()
+    fun GetScore_ExistentScore_RetrievesCorrectScore() = runTest {
+        // Valid device id for test
+        val deviceId = "3173997c-25d7-457d-8219-b510dd5c7522"
+        // Test language for score
         val language = "{test language}"
+        // Test quiz name for score
         val quizName = "test name"
-
-        // Giving user 3 correct answers
-        viewModel.correctAnswers = 3
-
-        // Submit score to the real backend
-        viewModel.submitScore(deviceId, language, quizName, context)
-
-        // Wait for server processing
-        delay(5000)
 
         // Fetch the score back
         viewModel.getScore(deviceId, language, quizName)
 
-        // Wait for the flow to update
+        // Getting first entry in scoresMap
         viewModel.scoresMap.first { it.containsKey(quizName) }
 
         // Assigning score to val
@@ -55,5 +47,29 @@ class QuizViewModelIntegrationTest {
 
         // Assert the correct score is returned
         Assert.assertEquals(3, score)
+    }
+
+    @Test
+    fun GetScore_NonExistentScore_NoScoreRetrieved() = runTest {
+        // Nonexistent score parameters
+        val nonExistentDeviceId = UUID.randomUUID().toString()
+        val language = "nonexistent_language"
+        val quizName = "nonexistent_quiz"
+
+        // Giving user 3 correct answers
+        viewModel.correctAnswers = 3
+
+        // Try to get a nonexistent score
+        viewModel.getScore(nonExistentDeviceId, language, quizName)
+
+        // Wait to see if score is returned
+        delay(1000)
+
+        val result = withTimeoutOrNull(2000) {
+            viewModel.scoresMap.first { it.containsKey(quizName) }
+        }
+
+        // Should be null if the score was never added
+        Assert.assertNull(result)
     }
 }

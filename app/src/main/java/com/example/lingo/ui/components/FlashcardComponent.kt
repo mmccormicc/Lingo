@@ -97,7 +97,7 @@ fun FlashcardComponent(viewModel: FlashcardViewModel) {
             // Flip icon in top right corner
             Icon(
                 imageVector = Icons.Filled.Refresh,
-                contentDescription = "Flip Over",
+                contentDescription = "Flip Card Over",
                 modifier = Modifier
                     .size(64.dp)
                     .align(Alignment.TopEnd)
@@ -122,7 +122,7 @@ fun FlashcardComponent(viewModel: FlashcardViewModel) {
     ) {
         // Next text
         Text(
-            text = "Next",
+            text = "Next Flashcard",
             style = MaterialTheme.typography.displayMedium.copy(
                 color = MaterialTheme.colorScheme.background
             ),

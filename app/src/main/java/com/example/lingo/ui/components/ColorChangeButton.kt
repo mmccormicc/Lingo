@@ -37,6 +37,9 @@ fun ColorChangeButton(viewModel: BaseQuestionsViewModel, isCorrect : Boolean, bu
     // Current button color
     var buttonColor by remember(key) { mutableStateOf(defaultColor) }
 
+    // CUrrent button text
+    var buttonText by remember(key) { mutableStateOf(buttonText) }
+
     // Scope to start coroutine
     val scope = rememberCoroutineScope()
 
@@ -58,8 +61,10 @@ fun ColorChangeButton(viewModel: BaseQuestionsViewModel, isCorrect : Boolean, bu
                 scope.launch {
                     // Setting button color based on if it was correct answer or not
                     if (isCorrect) {
+                        buttonText = "Correct"
                         buttonColor = correctColor
                     } else {
+                        buttonText = "Incorrect"
                         buttonColor = incorrectColor
                     }
                     // Waiting for animation
