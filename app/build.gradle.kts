@@ -89,6 +89,13 @@ dependencies {
     // MockK
     testImplementation("io.mockk:mockk:1.13.5")
 
+    // JUnit 5 API and engine
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+
+    // Optional: JUnit Vintage (to run JUnit 4 tests alongside JUnit 5)
+    testImplementation("org.junit.vintage:junit-vintage-engine:5.8.2")
+
 
     // Network Imports
 

@@ -1,17 +1,10 @@
 package com.example.lingo.utils
 
 import android.content.Context
-import android.util.Log
-import androidx.compose.runtime.remember
-import androidx.lifecycle.viewModelScope
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.example.lingo.data.QuizScore
 import com.example.lingo.network.QuizRepository
 import com.example.lingo.network.RetrofitProvider
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 import java.util.UUID
 
 object DeviceIdManager {
@@ -26,8 +19,6 @@ object DeviceIdManager {
     suspend fun getOrCreateDeviceId(context: Context) {
 
         if (cachedDeviceId != null) return
-
-        Log.d("DeviceId", "Making a device id")
 
         // Creating master key
         val masterKey = MasterKey.Builder(context)
@@ -51,15 +42,19 @@ object DeviceIdManager {
         .also { newId ->
             // Adding device id to secure prefs
             securePrefs.edit().putString(DEVICE_ID_KEY, newId).apply()
+            // Caching device ID
+            cachedDeviceId = newId
             // Sending Id to remote server
             repository.submitDeviceId(newId)
         }
-
-        Log.d("DeviceIDManager", "Current ID: $cachedDeviceId")
 
     }
 
     fun getCachedDeviceId(): String? {
         return cachedDeviceId
+    }
+
+    fun setCachedDeviceId(deviceId: String?) {
+        cachedDeviceId = deviceId
     }
 }

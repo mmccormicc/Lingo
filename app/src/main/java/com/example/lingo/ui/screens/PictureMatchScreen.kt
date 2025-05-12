@@ -75,7 +75,7 @@ fun PictureMatchScreen(navController : NavController, languageName: String) {
             modifier = Modifier.fillMaxWidth()
         )
 
-        // Painting current question image
+        // Painting current picture match question image
         AsyncImage(
             model = pictureMatchViewModel.currentQuestion.pictureID,
             contentDescription = stringResource(pictureMatchViewModel.currentQuestion.pictureID),

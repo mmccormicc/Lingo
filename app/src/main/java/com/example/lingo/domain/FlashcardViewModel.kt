@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.lingo.data.Flashcard
 import com.example.lingo.data.FlashcardCollection
-import com.example.lingo.data.Quiz
 import kotlin.random.Random
 
 
@@ -104,7 +103,6 @@ class FlashcardViewModel(): ViewModel() {
     fun nextCard() {
         // cards remaining
         if (unseenCards.size > 1) {
-            println("Has next card")
             // Get random index in range of unseen card list size
             var nextCardIndex = Random.nextInt(0, unseenCards.size)
 

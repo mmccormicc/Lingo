@@ -11,14 +11,11 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.Button
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +26,6 @@ import coil3.compose.AsyncImage
 import com.example.lingo.R
 import com.example.lingo.domain.FlashcardViewModel
 import com.example.lingo.navigation.Routes
-import com.example.lingo.domain.QuizViewModel
 import com.example.lingo.ui.components.FlashcardComponent
 
 @Composable

@@ -13,13 +13,10 @@ import com.example.lingo.data.Quiz
 import com.example.lingo.data.QuizQuestion
 import com.example.lingo.data.QuizScore
 import com.example.lingo.network.QuizRepository
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 
 class QuizViewModel(private val repository: QuizRepository) : ViewModel() {

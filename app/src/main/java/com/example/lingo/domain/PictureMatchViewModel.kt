@@ -61,7 +61,6 @@ class PictureMatchViewModel(): ViewModel(), BaseQuestionsViewModel {
     override fun nextQuestion() {
         // More than one question remaining
         if (unseenQuestions.size > 1) {
-            println("Has next question")
             // Get random index in range of unseen question list size
             var nextQuestionIndex = Random.nextInt(0, unseenQuestions.size)
             // Set current question from index
@@ -88,7 +87,6 @@ class PictureMatchViewModel(): ViewModel(), BaseQuestionsViewModel {
             currentQuestionIndex++
         }
 
-        print(seenQuestions)
     }
 
     // Set picture questions to be displayed

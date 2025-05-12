@@ -5,9 +5,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.lingo.R
-import com.example.lingo.data.PictureMatchQuestion
-import com.example.lingo.data.Quiz
 import com.example.lingo.data.QuizQuestion
 import kotlin.random.Random
 
@@ -62,7 +59,6 @@ class MissingWordsViewModel(): ViewModel(), BaseQuestionsViewModel {
     override fun nextQuestion() {
         // Questions remaining
         if (unseenQuestions.size > 1) {
-            println("Has next question")
             // Get random index in range of unseen question list size
             var nextQuestionIndex = Random.nextInt(0, unseenQuestions.size)
             // Set current question from index
@@ -89,7 +85,6 @@ class MissingWordsViewModel(): ViewModel(), BaseQuestionsViewModel {
             currentQuestionIndex++
         }
 
-        print(seenQuestions)
     }
 
     // Set missing words questions to be displayed
